@@ -1,7 +1,9 @@
 import React from 'react';
 import { CLIENT_LOGOS } from '../data/portfolioData';
+import { useLanguage } from './LanguageContext';
 
 export const Marquee: React.FC = () => {
+  const { t } = useLanguage();
   // Duplicate logos for seamless infinite loop effect
   const marqueeItems = [...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS];
 
@@ -10,9 +12,9 @@ export const Marquee: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 mb-4 flex items-center justify-between text-xs font-display text-rose-300/80">
         <span className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-[#D68379]" />
-          TRUSTED BY INNOVATIVE BRANDS &amp; INDUSTRY PARTNERS
+          {t('marquee_trusted')}
         </span>
-        <span className="hidden sm:inline tracking-widest uppercase">GLOBAL CLIENTELE</span>
+        <span className="hidden sm:inline tracking-widest uppercase">{t('marquee_global')}</span>
       </div>
 
       <div className="relative w-full overflow-hidden">

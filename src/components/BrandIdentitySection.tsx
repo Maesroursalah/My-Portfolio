@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Palette, Type, Feather, Sparkles, Copy, Check, Info, Box } from 'lucide-react';
 import { ColorSwatch, TypographySpec, BrandSpecs } from '../types';
+import { useLanguage } from './LanguageContext';
 
 interface BrandIdentitySectionProps {
   colorPalette?: ColorSwatch[];
@@ -13,6 +14,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
   typography,
   brandSpecs,
 }) => {
+  const { language } = useLanguage();
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
 
   const handleCopyHex = (hex: string) => {
@@ -29,24 +31,24 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
         <Sparkles className="w-6 h-6 text-[#D68379]" />
         <div>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fff8f0]">
-            BRAND IDENTITY &amp; DESIGN SYSTEM SPECS
+            {language === 'ar' ? 'مواصفات الهوية البصرية ونظام التصميم' : language === 'fr' ? 'CHARTE GRAPHIQUE & SPÉCIFICATIONS DESIGN SYSTEM' : 'BRAND IDENTITY & DESIGN SYSTEM SPECS'}
           </h2>
           <p className="text-xs font-display text-rose-300/70 uppercase tracking-wider">
-            Charte Graphique • Palette de Couleurs • Police de Caractères • Architecture Olfactive
+            {language === 'ar' ? 'دليل الهوية • لوحة الألوان • الخطوط والطباعة • البنية البصرية' : 'Charte Graphique • Palette de Couleurs • Police de Caractères • Architecture Olfactive'}
           </p>
         </div>
       </div>
 
-      {/* 1. COLOR PALETTE (Palette de Couleurs) */}
+      {/* 1. COLOR PALETTE */}
       {colorPalette && colorPalette.length > 0 && (
         <div className="space-y-4 p-6 sm:p-8 rounded-3xl bg-[#251110] border border-[#572A26] shadow-xl">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-serif font-bold text-[#fff8f0] flex items-center gap-2">
               <Palette className="w-5 h-5 text-[#D68379]" />
-              COLOR PALETTE (PALETTE DE COULEURS)
+              {language === 'ar' ? 'لوحة الألوان المتناسقة' : language === 'fr' ? 'PALETTE DE COULEURS' : 'COLOR PALETTE (PALETTE DE COULEURS)'}
             </h3>
             <span className="text-xs font-display px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] border border-[#572A26]">
-              {colorPalette.length} Luxury Tones
+              {colorPalette.length} {language === 'ar' ? 'تدرجات' : 'Tones'}
             </span>
           </div>
 
@@ -63,13 +65,13 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
                 >
                   <button
                     onClick={() => handleCopyHex(swatch.hex)}
-                    className="opacity-0 group-hover:opacity-100 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-mono flex items-center gap-1 transition-opacity shadow-lg"
+                    className="opacity-0 group-hover:opacity-100 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-mono flex items-center gap-1 transition-opacity shadow-lg cursor-pointer"
                     title="Copy HEX Code"
                   >
                     {copiedHex === swatch.hex ? (
                       <>
                         <Check className="w-3 h-3 text-emerald-400" />
-                        <span>COPIED</span>
+                        <span>{language === 'ar' ? 'تم النسخ' : 'COPIED'}</span>
                       </>
                     ) : (
                       <>
@@ -106,7 +108,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-serif font-bold text-[#fff8f0] flex items-center gap-2">
               <Type className="w-5 h-5 text-[#D68379]" />
-              TYPOGRAPHY &amp; POLICE DE CARACTÈRES
+              {language === 'ar' ? 'هندسة الخطوط والطباعة' : language === 'fr' ? 'TYPOGRAPHIE & POLICE DE CARACTÈRES' : 'TYPOGRAPHY & POLICE DE CARACTÈRES'}
             </h3>
             <span className="text-xs font-display px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] border border-[#572A26]">
               Font Hierarchy Specimen
@@ -189,13 +191,13 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
         </div>
       )}
 
-      {/* 3. OLFACTORY SCENT PYRAMID (PYRAMIDE OLFACTIVE) */}
+      {/* 3. OLFACTORY SCENT PYRAMID */}
       {brandSpecs?.scentPyramid && (
         <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-[#251110] border border-[#572A26] shadow-xl">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-serif font-bold text-[#fff8f0] flex items-center gap-2">
               <Feather className="w-5 h-5 text-[#D68379]" />
-              OLFACTORY SCENT PYRAMID (PYRAMIDE OLFACTIVE)
+              {language === 'ar' ? 'الهرم العطري والتركيبة' : language === 'fr' ? 'PYRAMIDE OLFACTIVE' : 'OLFACTORY SCENT PYRAMID (PYRAMIDE OLFACTIVE)'}
             </h3>
             <span className="text-xs font-display px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] border border-[#572A26]">
               Haute Parfumerie Formulation
@@ -209,7 +211,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
                 01
               </div>
               <div className="text-xs font-display text-[#D68379] font-bold uppercase tracking-wider">
-                NOTES DE TÊTE (TOP NOTES)
+                {language === 'ar' ? 'افتتاحية العطر (Top Notes)' : 'NOTES DE TÊTE (TOP NOTES)'}
               </div>
               <h4 className="text-lg font-serif font-bold text-[#fff8f0]">Initial Impression</h4>
               <ul className="space-y-2 text-sm text-rose-200/90 font-sans">
@@ -228,7 +230,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
                 02
               </div>
               <div className="text-xs font-display text-[#D68379] font-bold uppercase tracking-wider">
-                NOTES DE CŒUR (HEART NOTES)
+                {language === 'ar' ? 'قلب العطر (Heart Notes)' : 'NOTES DE CŒUR (HEART NOTES)'}
               </div>
               <h4 className="text-lg font-serif font-bold text-[#fff8f0]">The Core Essence</h4>
               <ul className="space-y-2 text-sm text-rose-200/90 font-sans">
@@ -247,7 +249,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
                 03
               </div>
               <div className="text-xs font-display text-[#D68379] font-bold uppercase tracking-wider">
-                NOTES DE FOND (BASE NOTES)
+                {language === 'ar' ? 'قاعدة العطر (Base Notes)' : 'NOTES DE FOND (BASE NOTES)'}
               </div>
               <h4 className="text-lg font-serif font-bold text-[#fff8f0]">Enduring Trail &amp; Oud</h4>
               <ul className="space-y-2 text-sm text-rose-200/90 font-sans">
@@ -270,7 +272,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
             <div className="p-6 rounded-3xl bg-[#251110] border border-[#572A26] space-y-3">
               <h4 className="text-lg font-serif font-bold text-[#D68379] flex items-center gap-2">
                 <Info className="w-5 h-5" />
-                LOGO &amp; MONOGRAM CONCEPT
+                {language === 'ar' ? 'مفهوم الشعار والمونوغرام' : 'LOGO & MONOGRAM CONCEPT'}
               </h4>
               <p className="text-sm text-rose-200/80 leading-relaxed font-sans">
                 {brandSpecs.logoConcept}
@@ -282,7 +284,7 @@ export const BrandIdentitySection: React.FC<BrandIdentitySectionProps> = ({
             <div className="p-6 rounded-3xl bg-[#251110] border border-[#572A26] space-y-3">
               <h4 className="text-lg font-serif font-bold text-[#D68379] flex items-center gap-2">
                 <Box className="w-5 h-5" />
-                PACKAGING &amp; FLACON SPECIFICATIONS
+                {language === 'ar' ? 'مواصفات التغليف والزجاجة' : 'PACKAGING & FLACON SPECIFICATIONS'}
               </h4>
               <p className="text-sm text-rose-200/80 leading-relaxed font-sans">
                 {brandSpecs.packagingSpecs}

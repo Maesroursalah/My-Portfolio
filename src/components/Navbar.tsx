@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from './ThemeContext';
+import { useLanguage, LANGUAGE_OPTIONS, Language } from './LanguageContext';
 import {
   Menu,
   X,
@@ -14,12 +15,16 @@ import {
   Palette,
   Compass,
   ChevronRight,
+  ChevronDown,
   Mail,
   MessageCircle,
   Heart,
   ExternalLink,
   MapPin,
-  Briefcase
+  Briefcase,
+  Globe,
+  Languages,
+  Check
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
@@ -30,8 +35,10 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, t, isRTL } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
@@ -93,13 +100,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
   }, [menuOpen]);
 
   const navLinks = [
-    { name: 'Home', id: 'home', icon: Home, num: '01', desc: 'Landing overview & highlights' },
-    { name: 'Web Development', id: 'work', icon: Code, num: '02', desc: 'Interactive platforms & client case studies' },
-    { name: 'Graphic Design', id: 'graphic-design', icon: Palette, num: '03', desc: 'Branding charters, logos & ads' },
-    { name: 'Capabilities', id: 'services', icon: Sparkles, num: '04', desc: 'End-to-end design & engineering' },
-    { name: 'Skills & Stack', id: 'skills', icon: Layers, num: '05', desc: 'Software proficiencies & frameworks' },
-    { name: 'Work Process', id: 'process', icon: Compass, num: '06', desc: 'From discovery to production launch' },
-    { name: 'About Me', id: 'about', icon: User, num: '07', desc: 'Background & creative journey' },
+    { name: t('nav_home'), id: 'home', icon: Home, num: '01' },
+    { name: t('nav_work'), id: 'work', icon: Code, num: '02' },
+    { name: t('nav_graphic'), id: 'graphic-design', icon: Palette, num: '03' },
+    { name: t('nav_services'), id: 'services', icon: Sparkles, num: '04' },
+    { name: t('nav_skills'), id: 'skills', icon: Layers, num: '05' },
+    { name: t('nav_process'), id: 'process', icon: Compass, num: '06' },
+    { name: t('nav_about'), id: 'about', icon: User, num: '07' },
   ];
 
   const handleNavClick = (pageId: string) => {
@@ -183,14 +190,83 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
           </nav>
 
           {/* Right CTA & Interactive Menu Trigger */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Language Selector Dropdown in Navbar */}
+            <div className="relative">
+              <button
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="group flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-[#251110] text-rose-100 border border-[#572A26] hover:border-[#D68379] hover:bg-[#381B19] transition-all text-xs font-display font-semibold shadow-md active:scale-95 cursor-pointer"
+                aria-label="Change Language"
+                title="Language / Langue / اللغة"
+              >
+                <Languages className="w-3.5 h-3.5 text-[#D68379] group-hover:scale-110 transition-transform" />
+                <span className="font-mono text-[11px] font-bold text-[#fff8f0] uppercase tracking-wider">
+                  {language === 'en' ? 'EN' : language === 'fr' ? 'FR' : 'العربية'}
+                </span>
+                <ChevronDown className={`w-3 h-3 text-rose-300/60 transition-transform duration-200 ${langDropdownOpen ? 'rotate-180 text-[#D68379]' : ''}`} />
+              </button>
+
+              {/* Language Dropdown Menu */}
+              <AnimatePresence>
+                {langDropdownOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setLangDropdownOpen(false)} 
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className={`absolute top-full mt-2 ${isRTL ? 'left-0' : 'right-0'} z-50 w-48 rounded-2xl bg-[#1B0C0B] border border-[#572A26] shadow-2xl p-1.5 space-y-1`}
+                    >
+                      <div className="px-2.5 py-1.5 text-[10px] font-mono text-rose-300/60 uppercase tracking-wider border-b border-[#381B19]">
+                        {t('language_select')}
+                      </div>
+                      {LANGUAGE_OPTIONS.map((opt) => {
+                        const isSelected = language === opt.code;
+                        return (
+                          <button
+                            key={opt.code}
+                            onClick={() => {
+                              setLanguage(opt.code);
+                              setLangDropdownOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-display transition-all ${
+                              isSelected
+                                ? 'bg-[#381B19] text-[#fff8f0] border border-[#D68379]/50 font-bold'
+                                : 'text-rose-200/80 hover:bg-[#251110] hover:text-[#fff8f0]'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-7 h-5 rounded-md bg-[#251110] border border-[#572A26] flex items-center justify-center text-[10px] font-mono font-bold text-[#D68379] shrink-0">
+                                {opt.badge}
+                              </span>
+                              <div className="text-left flex flex-col">
+                                <span className="font-sans font-medium text-xs leading-tight">{opt.nativeLabel}</span>
+                                <span className="text-[10px] text-rose-300/50 uppercase">{opt.label}</span>
+                              </div>
+                            </div>
+                            {isSelected && <Check className="w-4 h-4 text-[#D68379]" />}
+                          </button>
+                        );
+                      })}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Contact Me Button */}
             <a
-              href="tel:0652297244"
+              href={PERSONAL_INFO.whatsapp}
+              target="_blank"
+              rel="noreferrer"
               className="hidden xs:inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-[#B85C52] to-[#D68379] hover:from-[#D68379] hover:to-[#EBB5AF] text-[#150B0A] font-display font-bold text-xs shadow-md shadow-rose-950/40 transition-all hover:scale-105 cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5" />
-              <span>Contact</span>
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>{t('nav_contact')}</span>
             </a>
 
             {/* Menu Trigger Button */}
@@ -204,7 +280,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
               aria-label="Toggle Navigation Menu"
             >
               <span className="hidden sm:inline font-bold">
-                {menuOpen ? 'Close' : 'Menu'}
+                {menuOpen ? t('nav_close') : t('nav_menu')}
               </span>
               <div className="relative w-4 h-4 flex items-center justify-center">
                 {menuOpen ? (
@@ -290,12 +366,47 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                 <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-800/60 text-[11px] font-mono font-semibold">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Available For Full-Time Role</span>
+                    <span>{t('available_role')}</span>
                   </div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 border border-[#572A26] text-[11px] font-mono">
                     <MapPin className="w-3 h-3 text-[#D68379]" />
                     <span>{PERSONAL_INFO.location}</span>
                   </div>
+                </div>
+              </div>
+
+              {/* Language Selection Card in Menu */}
+              <div className="bg-[#1B0C0B]/90 backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-xl border border-[#381B19] space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-display font-bold text-[#fff8f0] uppercase tracking-wider">
+                    <Languages className="w-4 h-4 text-[#D68379]" />
+                    <span>{t('nav_language')} // Language</span>
+                  </div>
+                  <span className="text-[11px] font-mono text-rose-300/70">
+                    {language === 'en' ? 'English (EN)' : language === 'fr' ? 'Français (FR)' : 'العربية (AR)'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  {LANGUAGE_OPTIONS.map((opt) => {
+                    const isSelected = language === opt.code;
+                    return (
+                      <button
+                        key={opt.code}
+                        onClick={() => setLanguage(opt.code)}
+                        className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2.5 px-2.5 rounded-xl border text-xs font-display font-bold transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-gradient-to-r from-[#B85C52] to-[#D68379] text-[#150B0A] border-[#D68379] shadow-md shadow-rose-950/60'
+                            : 'bg-[#251110] text-rose-200 border-[#572A26] hover:border-[#D68379] hover:bg-[#381B19]'
+                        }`}
+                      >
+                        <span className="px-1.5 py-0.5 rounded bg-black/30 border border-white/10 text-[10px] font-mono font-bold">
+                          {opt.badge}
+                        </span>
+                        <span className="font-sans text-xs">{opt.nativeLabel}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -311,7 +422,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                     </div>
                     <div>
                       <span className="text-sm font-semibold text-[#fff8f0] group-hover:text-[#D68379] transition-colors block">
-                        Web Development
+                        {t('nav_work')}
                       </span>
                       <span className="text-xs text-rose-300/60">
                         Interactive platforms, custom tools & SaaS interfaces
@@ -331,7 +442,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                     </div>
                     <div>
                       <span className="text-sm font-semibold text-[#fff8f0] group-hover:text-amber-400 transition-colors block">
-                        Graphic Design & Branding
+                        {t('nav_graphic')}
                       </span>
                       <span className="text-xs text-rose-300/60">
                         Visual identities, brand guides, packaging & social ads
@@ -353,7 +464,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium text-rose-100 group-hover:text-purple-300 transition-colors">
-                      Capabilities & Services
+                      {t('nav_services')}
                     </span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-rose-300/40 group-hover:text-purple-300 group-hover:translate-x-0.5 transition-all" />
@@ -368,7 +479,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                       <Layers className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium text-rose-100 group-hover:text-blue-300 transition-colors">
-                      Skills & Tech Stack
+                      {t('nav_skills')}
                     </span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-rose-300/40 group-hover:text-blue-300 group-hover:translate-x-0.5 transition-all" />
@@ -383,7 +494,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                       <Compass className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium text-rose-100 group-hover:text-emerald-300 transition-colors">
-                      Work Process & Methodology
+                      {t('nav_process')}
                     </span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-rose-300/40 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all" />
@@ -398,7 +509,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                       <User className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium text-rose-100 group-hover:text-orange-300 transition-colors">
-                      About Me & Journey
+                      {t('nav_about')}
                     </span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-rose-300/40 group-hover:text-orange-300 group-hover:translate-x-0.5 transition-all" />
@@ -478,7 +589,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                   onClick={() => setMenuOpen(false)}
                   className="px-6 py-2.5 rounded-full bg-[#251110] hover:bg-[#381B19] border border-[#572A26] hover:border-[#D68379] text-rose-100 font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md"
                 >
-                  Back to Portfolio
+                  {t('nav_back_portfolio')}
                 </button>
               </div>
             </div>

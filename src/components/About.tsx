@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
-  Sparkles, 
-  MapPin, 
   Palette, 
   Code, 
-  Terminal, 
-  Cpu, 
-  Layers, 
   Zap, 
   Smartphone, 
   MessageCircle,
@@ -18,11 +13,14 @@ import {
   Compass,
   FileCode2,
   Wrench,
-  Lightbulb
+  Lightbulb,
+  Sparkles
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { useLanguage } from './LanguageContext';
 
 export const About: React.FC = () => {
+  const { t } = useLanguage();
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleCopyEmail = () => {
@@ -36,7 +34,7 @@ export const About: React.FC = () => {
       {/* Section Header */}
       <div className="border-b border-[#572A26] pb-8">
         <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#fff8f0]">
-          About Me
+          {t('about_title')}
         </h2>
       </div>
 
@@ -58,27 +56,27 @@ export const About: React.FC = () => {
                 SALAH EDDINE MESROUR
               </span>
               <span className="text-xs font-mono text-rose-300/70">
-                CASABLANCA, SIDI MAAROUF
+                {t('about_location')}
               </span>
             </div>
 
             <h3 className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-[#fff8f0] leading-tight">
-              Hi, I'm <span className="text-[#D68379]">Salah Eddine Mesrour</span>.
+              {t('about_greeting_prefix')} <span className="text-[#D68379]">{t('about_greeting_name')}</span>.
             </h3>
 
-            <p className="text-lg sm:text-2xl font-sans text-rose-100 font-normal leading-relaxed border-l-2 border-[#D68379] pl-6 italic max-w-4xl">
-              "I bridge the gap between creative artistry and logical engineering. I don’t just build websites, and I don’t just design logos—I craft the complete visual and technical blueprint for brands from the ground up."
+            <p className="text-lg sm:text-2xl font-sans text-rose-100 font-normal leading-relaxed border-l-2 rtl:border-l-0 rtl:border-r-2 border-[#D68379] pl-6 rtl:pl-0 rtl:pr-6 italic max-w-4xl">
+              {t('about_quote')}
             </p>
           </div>
 
           <div className="pt-6 border-t border-[#381B19] flex flex-wrap gap-6 text-sm font-display text-rose-200/80">
             <div className="flex items-center gap-2">
               <Compass className="w-4 h-4 text-[#D68379]" />
-              <span>Complete Brand Identity</span>
+              <span>{t('about_tag_brand')}</span>
             </div>
             <div className="flex items-center gap-2">
               <FileCode2 className="w-4 h-4 text-[#D68379]" />
-              <span>Full-Stack Web Engineering</span>
+              <span>{t('about_tag_web')}</span>
             </div>
           </div>
         </div>
@@ -88,20 +86,20 @@ export const About: React.FC = () => {
           <div className="p-7 rounded-3xl bg-[#1D0D0C] border border-[#572A26] space-y-3 shadow-xl">
             <div className="flex items-center gap-2 text-[#D68379] font-display text-xs font-bold uppercase tracking-wider">
               <Lightbulb className="w-4 h-4" />
-              <span>Bespoke Approach</span>
+              <span>{t('about_bespoke_title')}</span>
             </div>
             <p className="text-sm sm:text-base font-sans text-rose-200/90 leading-relaxed font-light">
-              I believe that a great digital presence starts with a rock-solid visual foundation (the logo, the color palette, the typography) and ends with clean, custom-written code that performs flawlessly. By mastering both ends of the spectrum, I ensure that nothing is lost in translation between the design concept and the live website.
+              {t('about_bespoke_desc')}
             </p>
           </div>
 
           <div className="p-7 rounded-3xl bg-[#1D0D0C] border border-[#572A26] space-y-3 shadow-xl">
             <div className="flex items-center gap-2 text-[#D68379] font-display text-xs font-bold uppercase tracking-wider">
               <Compass className="w-4 h-4" />
-              <span>Visual &amp; Structural Focus</span>
+              <span>{t('about_structural_title')}</span>
             </div>
             <p className="text-sm sm:text-base font-sans text-rose-200/90 leading-relaxed font-light">
-              When I’m not sketching concepts or structuring code architectures, I’m constantly looking at how structural components fit together—whether that's fine-tuning a visual grid or building out seamless user experiences.
+              {t('about_structural_desc')}
             </p>
           </div>
         </div>
@@ -112,13 +110,13 @@ export const About: React.FC = () => {
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-xs font-display text-[#D68379] font-bold uppercase tracking-widest">
             <Wrench className="w-4 h-4" />
-            <span>TOOLKIT &amp; CAPABILITIES</span>
+            <span>{t('about_toolkit_kicker')}</span>
           </div>
           <h3 className="text-3xl sm:text-4xl font-serif font-bold text-[#fff8f0]">
-            Core Skills &amp; Technologies
+            {t('about_toolkit_title')}
           </h3>
           <p className="text-rose-200/80 font-sans text-sm sm:text-base max-w-3xl font-light">
-            I keep my workflow sharp, modern, and focused on tools that allow me to create custom, scalable assets without relying on generic templates or shortcuts.
+            {t('about_toolkit_desc')}
           </p>
         </div>
 
@@ -138,9 +136,9 @@ export const About: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-xl font-serif font-bold text-[#fff8f0]">
-                    Brand Identity &amp; Design
+                    {t('about_design_toolkit_title')}
                   </h4>
-                  <span className="text-xs font-mono text-rose-300/60 block">CREATIVE DIRECTION &amp; UI</span>
+                  <span className="text-xs font-mono text-rose-300/60 block">{t('about_design_toolkit_sub')}</span>
                 </div>
               </div>
             </div>
@@ -150,14 +148,14 @@ export const About: React.FC = () => {
               <div className="p-4 rounded-2xl bg-[#1D0D0C] border border-[#381B19] space-y-1.5 hover:border-[#572A26] transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-display font-bold text-[#D68379] uppercase tracking-wider">
-                    Vector &amp; Identity Design
+                    Vector & Identity Design
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#381B19] text-rose-200">
                     ADOBE ILLUSTRATOR
                   </span>
                 </div>
                 <p className="text-sm font-sans text-[#fff8f0] font-normal">
-                  Logos, Graphic Charters, Brand Guidelines &amp; Vector Assets
+                  Logos, Graphic Charters, Brand Guidelines & Vector Assets
                 </p>
               </div>
 
@@ -165,14 +163,14 @@ export const About: React.FC = () => {
               <div className="p-4 rounded-2xl bg-[#1D0D0C] border border-[#381B19] space-y-1.5 hover:border-[#572A26] transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-display font-bold text-[#D68379] uppercase tracking-wider">
-                    Visual Assets &amp; Compositing
+                    Visual Assets & Compositing
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#381B19] text-rose-200">
                     ADOBE PHOTOSHOP
                   </span>
                 </div>
                 <p className="text-sm font-sans text-[#fff8f0] font-normal">
-                  Image Editing, Visual Concepts &amp; Digital Compositing
+                  Image Editing, Visual Concepts & Digital Compositing
                 </p>
               </div>
 
@@ -187,7 +185,7 @@ export const About: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-sm font-sans text-[#fff8f0] font-normal">
-                  Interface Layouts, Wireframing &amp; Design Systems
+                  Interface Layouts, Wireframing & Design Systems
                 </p>
               </div>
             </div>
@@ -208,9 +206,9 @@ export const About: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="text-xl font-serif font-bold text-[#fff8f0]">
-                    Web Development &amp; Architecture
+                    {t('about_dev_toolkit_title')}
                   </h4>
-                  <span className="text-xs font-mono text-rose-300/60 block">FULL-STACK ENGINE</span>
+                  <span className="text-xs font-mono text-rose-300/60 block">{t('about_dev_toolkit_sub')}</span>
                 </div>
               </div>
             </div>
@@ -235,10 +233,10 @@ export const About: React.FC = () => {
               <div className="p-4 rounded-2xl bg-[#1D0D0C] border border-[#381B19] space-y-1.5 hover:border-[#572A26] transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-display font-bold text-[#D68379] uppercase tracking-wider">
-                    Back-End &amp; Logic
+                    Back-End & Logic
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#381B19] text-rose-200">
-                    SERVER &amp; APIS
+                    SERVER & APIS
                   </span>
                 </div>
                 <p className="text-sm font-sans text-[#fff8f0] font-normal">
@@ -250,7 +248,7 @@ export const About: React.FC = () => {
               <div className="p-4 rounded-2xl bg-[#1D0D0C] border border-[#381B19] space-y-1.5 hover:border-[#572A26] transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-display font-bold text-[#D68379] uppercase tracking-wider">
-                    Environment &amp; Version Control
+                    Environment & Version Control
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#381B19] text-rose-200">
                     DEV PIPELINE
@@ -270,10 +268,10 @@ export const About: React.FC = () => {
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-xs font-display text-[#D68379] font-bold uppercase tracking-widest">
             <Compass className="w-4 h-4" />
-            <span>CORE PRINCIPLES</span>
+            <span>{t('about_principles_title')}</span>
           </div>
           <h3 className="text-3xl sm:text-4xl font-serif font-bold text-[#fff8f0]">
-            My Philosophy
+            {t('about_principles_title')}
           </h3>
         </div>
 
@@ -291,10 +289,10 @@ export const About: React.FC = () => {
                 <Zap className="w-6 h-6" />
               </div>
               <h4 className="text-xl font-serif font-bold text-[#fff8f0]">
-                Performance Optimization
+                {t('about_perf_title')}
               </h4>
               <p className="text-sm font-sans text-rose-200/80 leading-relaxed font-light">
-                A beautiful design is useless if it doesn't load. I optimize assets, clean up logic, and ensure fast loading speeds across the board.
+                {t('about_perf_desc')}
               </p>
             </div>
             <div className="pt-3 border-t border-[#381B19] text-xs font-mono text-[#D68379] uppercase tracking-wider">
@@ -315,10 +313,10 @@ export const About: React.FC = () => {
                 <Smartphone className="w-6 h-6" />
               </div>
               <h4 className="text-xl font-serif font-bold text-[#fff8f0]">
-                Responsive Web Design
+                {t('about_responsive_title')}
               </h4>
               <p className="text-sm font-sans text-rose-200/80 leading-relaxed font-light">
-                Your brand needs to look flawless on every single screen, from a 5-inch smartphone to a 32-inch 4K desktop monitor.
+                {t('about_responsive_desc')}
               </p>
             </div>
             <div className="pt-3 border-t border-[#381B19] text-xs font-mono text-[#D68379] uppercase tracking-wider">
@@ -341,13 +339,13 @@ export const About: React.FC = () => {
         <div className="max-w-3xl space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>COLLABORATION &amp; INQUIRIES</span>
+            <span>COLLABORATION & INQUIRIES</span>
           </div>
           <h3 className="text-3xl sm:text-5xl font-serif font-bold text-[#fff8f0] tracking-tight">
-            🚀 Let's Build Something Meaningful
+            🚀 {t('contact_title')}
           </h3>
           <p className="text-base sm:text-lg font-sans text-rose-200/90 font-light leading-relaxed">
-            Whether you need to establish a brand identity from scratch or develop a fully tailored digital experience, I bring the technical execution and the creative vision to make it happen.
+            {t('contact_subtitle')}
           </p>
         </div>
 
@@ -361,7 +359,7 @@ export const About: React.FC = () => {
             className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-display font-bold text-sm sm:text-base transition-all duration-300 shadow-xl shadow-emerald-950/50 flex items-center gap-2.5 group active:scale-95"
           >
             <MessageCircle className="w-5 h-5" />
-            <span>Chat on WhatsApp</span>
+            <span>{t('chat_whatsapp')}</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
 
@@ -384,12 +382,12 @@ export const About: React.FC = () => {
             {copiedEmail ? (
               <>
                 <Check className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">Email Copied!</span>
+                <span className="text-emerald-400 font-bold">{t('email_copied')}</span>
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4 text-[#D68379]" />
-                <span>Copy Email</span>
+                <span>{t('copy_email')}</span>
               </>
             )}
           </button>

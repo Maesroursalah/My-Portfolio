@@ -2,12 +2,15 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { FolderGit2, ArrowRight, Palette, Code } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { useLanguage } from './LanguageContext';
 
 interface HeroProps {
   onNavigate?: (page: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+
   const handleNav = (pageId: string) => {
     if (onNavigate) {
       onNavigate(pageId);
@@ -40,21 +43,21 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             {/* Top Status Badge */}
             <div className="absolute top-4 right-4 flex items-center justify-end">
               <span className="px-3 py-1.5 rounded-full bg-[#381B19]/90 backdrop-blur-md border border-[#572A26] text-xs font-mono text-[#D68379] font-bold shadow-lg">
-                CASABLANCA, MOROCCO
+                {t('hero_city')}
               </span>
             </div>
 
             {/* Bottom Info Bar */}
-            <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#150B0A]/95 backdrop-blur-md border border-[#572A26] space-y-1.5 text-left shadow-2xl">
+            <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#150B0A]/95 backdrop-blur-md border border-[#572A26] space-y-1.5 text-left rtl:text-right shadow-2xl">
               <div className="text-base sm:text-lg font-display font-bold text-[#fff8f0]">
-                MESROUR SALAH EDDINE
+                {t('hero_name')}
               </div>
               <div className="text-xs text-[#D68379] font-mono font-medium">
-                Graphic Designer x Web Developer
+                {t('hero_subtitle')}
               </div>
               <div className="text-xs text-rose-200/90 font-sans flex items-center justify-between pt-1.5 border-t border-[#381B19]">
-                <span className="flex items-center gap-1 text-[#EBB5AF]"><Palette className="w-3.5 h-3.5 text-[#D68379]" /> Brand Identity</span>
-                <span className="flex items-center gap-1 text-[#EBB5AF]"><Code className="w-3.5 h-3.5 text-[#D68379]" /> Web Architecture</span>
+                <span className="flex items-center gap-1 text-[#EBB5AF]"><Palette className="w-3.5 h-3.5 text-[#D68379]" /> {t('hero_tag_brand')}</span>
+                <span className="flex items-center gap-1 text-[#EBB5AF]"><Code className="w-3.5 h-3.5 text-[#D68379]" /> {t('hero_tag_web')}</span>
               </div>
             </div>
           </motion.div>
@@ -69,26 +72,24 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         >
           <button
             onClick={() => handleNav('work')}
-            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30"
+            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30 cursor-pointer"
             data-cursor="DEVELOPMENT"
           >
             <Code className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">View The Works</span>
+            <span className="whitespace-nowrap">{t('hero_view_works')}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
           </button>
 
           <button
             onClick={() => handleNav('graphic-design')}
-            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-[#251110] border-2 border-[#572A26] hover:border-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:bg-[#381B19] transition-all shadow-xl shadow-black/60"
+            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-[#251110] border-2 border-[#572A26] hover:border-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:bg-[#381B19] transition-all shadow-xl shadow-black/60 cursor-pointer"
             data-cursor="GRAPHIC DESIGN"
           >
             <Palette className="w-4 h-4 text-[#D68379] shrink-0" />
-            <span className="whitespace-nowrap">Graphic Design</span>
+            <span className="whitespace-nowrap">{t('hero_graphic_design')}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#D68379] shrink-0" />
           </button>
         </motion.div>
-
-
       </div>
     </section>
   );

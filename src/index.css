@@ -58,6 +58,20 @@ html {
   color: #fff8f0;
 }
 
+html.lang-ar, [dir="rtl"] {
+  font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+}
+
+html.lang-ar .font-serif,
+[dir="rtl"] .font-serif {
+  font-family: 'Cairo', 'Cormorant Garamond', Georgia, serif;
+}
+
+html.lang-ar .font-display,
+[dir="rtl"] .font-display {
+  font-family: 'Cairo', 'Syne', sans-serif;
+}
+
 /* Custom sleek scrollbar matching dusty rose terracotta palette */
 ::-webkit-scrollbar {
   width: 8px;

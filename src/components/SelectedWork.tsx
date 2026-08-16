@@ -3,12 +3,15 @@ import { motion } from 'motion/react';
 import { CASE_STUDIES } from '../data/portfolioData';
 import { CaseStudy } from '../types';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface SelectedWorkProps {
   onSelectCaseStudy: (caseStudy: CaseStudy) => void;
 }
 
 export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectCaseStudy }) => {
+  const { t } = useLanguage();
+
   return (
     <section id="work" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 z-10 relative">
       {/* Section Header */}
@@ -16,13 +19,13 @@ export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectCaseStudy })
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs font-display text-[#D68379] font-bold tracking-widest uppercase">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>01 // PORTFOLIO SHOWCASE</span>
+            <span>{t('work_kicker')}</span>
           </div>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#fff8f0]">
-            Selected Work
+            {t('work_title')}
           </h2>
           <p className="text-rose-200/80 max-w-xl text-base sm:text-lg font-sans font-light">
-            A curated selection of commercial brand identities, Next.js web apps, and design systems built for measurable impact.
+            {t('work_subtitle')}
           </p>
         </div>
       </div>

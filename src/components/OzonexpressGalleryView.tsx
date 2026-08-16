@@ -1,50 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Maximize2, X, ChevronLeft, ChevronRight, Play, Pause, LayoutGrid, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface OzonexpressGalleryViewProps {
   onBack: () => void;
 }
 
-const OZONEXPRESS_IMAGES = [
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/FIRST.png',
-    title: 'Visual Campaign 01',
-    description: 'Hero promotional visual advertising campaign'
-  },
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/GI.png',
-    title: 'Visual Campaign 02',
-    description: 'Brand identity & promotion graphic'
-  },
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/OI.png',
-    title: 'Visual Campaign 03',
-    description: 'Product feature highlight creative'
-  },
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/POST.png',
-    title: 'Social Media Post',
-    description: 'Engaging feed post design'
-  },
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/TETOUANE.png',
-    title: 'Tetouan Promotion Ad',
-    description: 'Special offers & regional social post'
-  },
-  {
-    url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/Untitled-16.png',
-    title: 'Brand Creative Ad',
-    description: 'High-conversion promotional banner'
-  }
-];
-
 export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ onBack }) => {
+  const { t, language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [direction, setDirection] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'slide' | 'grid'>('slide');
+
+  const OZONEXPRESS_IMAGES = [
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/FIRST.png',
+      title: language === 'ar' ? 'الحملة الإعلانية البصرية 01' : language === 'fr' ? 'Campagne Visuelle 01' : 'Visual Campaign 01',
+      description: language === 'ar' ? 'تصميم إعلاني ترويجي رئيسي عالي التأثير' : language === 'fr' ? 'Campagne publicitaire visuelle promotionnelle' : 'Hero promotional visual advertising campaign'
+    },
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/GI.png',
+      title: language === 'ar' ? 'الحملة الإعلانية البصرية 02' : language === 'fr' ? 'Campagne Visuelle 02' : 'Visual Campaign 02',
+      description: language === 'ar' ? 'تصميم جرافيكي يبرز هوية وترويج العلامة' : language === 'fr' ? 'Graphisme d’identité de marque et promotion' : 'Brand identity & promotion graphic'
+    },
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/OI.png',
+      title: language === 'ar' ? 'الحملة الإعلانية البصرية 03' : language === 'fr' ? 'Campagne Visuelle 03' : 'Visual Campaign 03',
+      description: language === 'ar' ? 'إبراز مزايا وخصائص المنتجات بأسلوب إبداعي' : language === 'fr' ? 'Création visuelle mettant en valeur les fonctionnalités' : 'Product feature highlight creative'
+    },
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/POST.png',
+      title: language === 'ar' ? 'منشورات شبكات التواصل الاجتماعي' : language === 'fr' ? 'Publication Réseaux Sociaux' : 'Social Media Post',
+      description: language === 'ar' ? 'تصاميم منشورات متناسقة وجاذبة لزيادة التفاعل' : language === 'fr' ? 'Design de publication engageant pour flux social' : 'Engaging feed post design'
+    },
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/TETOUANE.png',
+      title: language === 'ar' ? 'إعلان ترويجي لمدينة تطوان' : language === 'fr' ? 'Annonce Promotionnelle Tétouan' : 'Tetouan Promotion Ad',
+      description: language === 'ar' ? 'عروض خاصة وإعلانات موجهة للمناطق الجغرافية' : language === 'fr' ? 'Offres spéciales et publication régionale' : 'Special offers & regional social post'
+    },
+    {
+      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/Untitled-16.png',
+      title: language === 'ar' ? 'إعلان إبداعي لهوية العلامة' : language === 'fr' ? 'Bannière Créative de Marque' : 'Brand Creative Ad',
+      description: language === 'ar' ? 'بانر إعلاني عالي التحويل لمنصات التسويق' : language === 'fr' ? 'Bannière promotionnelle à fort taux de conversion' : 'High-conversion promotional banner'
+    }
+  ];
 
   const handleNext = () => {
     setDirection(1);
@@ -113,20 +115,21 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
       <div className="space-y-4">
         <button
           onClick={onBack}
-          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md"
+          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Graphic Design</span>
+          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
+          <span>{t('gallery_back')}</span>
         </button>
 
         <div className="pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#381B19] pb-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase">
-                Social Media Ads
+              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3" />
+                {t('cat_social')}
               </span>
               <span className="px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 text-xs font-mono border border-[#381B19]">
-                {OZONEXPRESS_IMAGES.length} Creatives
+                {OZONEXPRESS_IMAGES.length} Assets
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0] tracking-tight">
@@ -134,30 +137,30 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
             </h1>
           </div>
 
-          {/* View Mode & Autoplay Controls */}
+          {/* View Mode Controls */}
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-[#1B0C0B] border border-[#572A26] rounded-xl p-1">
               <button
                 onClick={() => setViewMode('slide')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
                   viewMode === 'slide'
                     ? 'bg-[#381B19] text-[#D68379] shadow-sm'
                     : 'text-rose-300/60 hover:text-[#fff8f0]'
                 }`}
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span>Slide View</span>
+                <span>{t('gallery_slide_view')}</span>
               </button>
               <button
                 onClick={() => setViewMode('grid')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-display font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
                   viewMode === 'grid'
                     ? 'bg-[#381B19] text-[#D68379] shadow-sm'
                     : 'text-rose-300/60 hover:text-[#fff8f0]'
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Grid View</span>
+                <span>{t('gallery_grid_view')}</span>
               </button>
             </div>
           </div>
@@ -167,7 +170,7 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
       {/* ---------------- SLIDE VIEW ---------------- */}
       {viewMode === 'slide' ? (
         <div className="space-y-5">
-          {/* Main Slide Stage (Compact PC Layout) */}
+          {/* Main Slide Stage */}
           <div className="relative w-full max-w-2xl mx-auto rounded-3xl overflow-hidden bg-[#1B0C0B] border border-[#572A26] shadow-2xl p-4 sm:p-5">
             <div className="relative aspect-square max-h-[420px] sm:max-h-[460px] w-full mx-auto rounded-2xl overflow-hidden bg-[#120706] flex items-center justify-center">
               <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -184,7 +187,7 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
                     src={OZONEXPRESS_IMAGES[currentIndex].url}
                     alt={OZONEXPRESS_IMAGES[currentIndex].title}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain select-none"
+                    className="w-full h-full object-contain select-none rounded-xl"
                   />
                 </motion.div>
               </AnimatePresence>
@@ -192,45 +195,38 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
               {/* Prev Slide Chevron */}
               <button
                 onClick={handlePrev}
-                className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-[#1B0C0B]/85 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-xl transition-all z-20"
+                className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-[#1B0C0B]/85 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-xl transition-all z-20 cursor-pointer"
                 aria-label="Previous Slide"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 rtl:rotate-180" />
               </button>
 
               {/* Next Slide Chevron */}
               <button
                 onClick={handleNext}
-                className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-[#1B0C0B]/85 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-xl transition-all z-20"
+                className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-[#1B0C0B]/85 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-xl transition-all z-20 cursor-pointer"
                 aria-label="Next Slide"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 rtl:rotate-180" />
               </button>
 
               {/* Expand Fullscreen Button */}
               <button
                 onClick={() => setIsLightboxOpen(true)}
-                className="absolute top-3 right-3 p-2 rounded-full bg-[#1B0C0B]/85 hover:bg-[#381B19] text-[#D68379] border border-[#572A26] backdrop-blur-md transition-colors z-20"
-                title="View Fullscreen"
+                className="absolute top-3 right-3 p-2 rounded-full bg-[#1B0C0B]/85 hover:bg-[#381B19] text-[#D68379] border border-[#572A26] backdrop-blur-md transition-colors z-20 cursor-pointer"
+                title={t('gallery_fullscreen')}
               >
-                <Maximize2 className="w-3.5 h-3.5" />
+                <Maximize2 className="w-4 h-4" />
               </button>
-
-              {/* Slide Counter Badge */}
-              <div className="absolute top-3 left-3 z-20">
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/85 text-[#D68379] border border-[#572A26] backdrop-blur-md">
-                  0{currentIndex + 1} / 0{OZONEXPRESS_IMAGES.length}
-                </span>
-              </div>
             </div>
 
-            {/* Slide Details Bar & Controls */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#381B19] mt-4">
-              <div className="space-y-0.5 text-center sm:text-left">
+            {/* Bottom Info in Slide Container */}
+            <div className="pt-4 flex items-center justify-between">
+              <div>
                 <h3 className="text-lg sm:text-xl font-serif font-bold text-[#fff8f0]">
                   {OZONEXPRESS_IMAGES[currentIndex].title}
                 </h3>
-                <p className="text-xs text-rose-300/70 font-sans">
+                <p className="text-xs text-rose-300/70 line-clamp-1">
                   {OZONEXPRESS_IMAGES[currentIndex].description}
                 </p>
               </div>
@@ -238,172 +234,132 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-xs font-display uppercase tracking-wider text-[#fff8f0] transition-colors"
+                  className="p-2 rounded-lg bg-[#251110] border border-[#572A26] text-rose-200 hover:text-[#fff8f0] text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  {isPlaying ? (
-                    <>
-                      <Pause className="w-3 h-3 text-[#D68379]" />
-                      <span>Pause</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3 h-3 text-[#D68379]" />
-                      <span>Autoplay</span>
-                    </>
-                  )}
+                  {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                  <span>{isPlaying ? t('gallery_pause') : t('gallery_play')}</span>
                 </button>
+                <span className="text-xs font-mono text-[#D68379] px-2.5 py-1 rounded-lg bg-[#251110] border border-[#572A26]">
+                  {currentIndex + 1} / {OZONEXPRESS_IMAGES.length}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Thumbnail Slider Strip */}
-          <div className="max-w-2xl mx-auto space-y-2">
-            <div className="flex items-center justify-between text-[11px] font-mono text-rose-300/60 px-1">
-              <span>Select Slide ({OZONEXPRESS_IMAGES.length} items)</span>
-              <span>Slide {currentIndex + 1} of {OZONEXPRESS_IMAGES.length}</span>
-            </div>
-
-            <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none snap-x justify-start sm:justify-center">
-              {OZONEXPRESS_IMAGES.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => goToSlide(idx)}
-                  className={`relative flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden transition-all duration-300 snap-start border-2 ${
-                    currentIndex === idx
-                      ? 'border-[#D68379] scale-105 shadow-md shadow-[#D68379]/30'
-                      : 'border-[#381B19] opacity-50 hover:opacity-90'
-                  }`}
-                >
-                  <img
-                    src={img.url}
-                    alt={img.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/80 via-transparent to-transparent" />
-                  <span className="absolute bottom-1 left-1 text-[9px] font-mono font-bold text-[#fff8f0]">
-                    0{idx + 1}
-                  </span>
-                </button>
-              ))}
-            </div>
+          {/* Thumbnails Row */}
+          <div className="flex items-center justify-center gap-3 overflow-x-auto py-2">
+            {OZONEXPRESS_IMAGES.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => goToSlide(idx)}
+                className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                  currentIndex === idx
+                    ? 'border-[#D68379] scale-105 shadow-lg shadow-[#D68379]/20'
+                    : 'border-[#381B19] opacity-60 hover:opacity-100'
+                }`}
+              >
+                <img
+                  src={img.url}
+                  alt={img.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover bg-[#1B0C0B]"
+                />
+              </button>
+            ))}
           </div>
         </div>
       ) : (
         /* ---------------- GRID VIEW ---------------- */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {OZONEXPRESS_IMAGES.map((img, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              transition={{ duration: 0.3, delay: idx * 0.08 }}
               onClick={() => {
                 setCurrentIndex(idx);
-                setViewMode('slide');
+                setIsLightboxOpen(true);
               }}
-              className="group relative rounded-3xl overflow-hidden bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] shadow-xl cursor-pointer transition-all duration-300"
+              className="group cursor-pointer rounded-2xl bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] p-3 space-y-3 transition-all duration-300 shadow-xl"
             >
-              <div className="relative aspect-square w-full bg-[#150B0A] overflow-hidden">
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-[#120706] flex items-center justify-center p-2">
                 <img
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="p-3.5 rounded-full bg-[#D68379] text-[#fff8f0] shadow-2xl transform scale-90 group-hover:scale-100 transition-transform">
-                    <Maximize2 className="w-5 h-5" />
-                  </div>
+                <div className="absolute top-2 right-2 p-1.5 rounded-full bg-[#1B0C0B]/80 text-[#D68379] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Maximize2 className="w-3.5 h-3.5" />
                 </div>
-
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-xs font-display font-bold text-[#fff8f0] px-3 py-1 rounded-lg bg-[#1B0C0B]/90 backdrop-blur-md border border-[#381B19]">
-                    {img.title}
-                  </span>
-                  <span className="text-[11px] font-mono text-[#D68379] px-2 py-1 rounded-md bg-[#1B0C0B]/90 backdrop-blur-md">
-                    0{idx + 1}
-                  </span>
-                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                  {img.title}
+                </h4>
+                <p className="text-xs text-rose-300/60 line-clamp-1">{img.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
       )}
 
-      {/* Fullscreen Lightbox Modal */}
+      {/* ---------------- LIGHTBOX MODAL ---------------- */}
       <AnimatePresence>
         {isLightboxOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsLightboxOpen(false)}
-            className="fixed inset-0 z-50 bg-[#0F0706]/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
+            className="fixed inset-0 z-50 bg-[#0F0706]/95 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-6"
           >
             {/* Top Bar */}
-            <div className="absolute top-4 left-4 right-4 sm:top-6 sm:left-8 sm:right-8 flex items-center justify-between z-10">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-serif font-bold text-[#fff8f0]">
-                  OZONEXPRESS — {OZONEXPRESS_IMAGES[currentIndex].title}
-                </span>
-                <span className="text-xs font-mono text-[#D68379] px-2 py-0.5 rounded-md bg-[#381B19]">
-                  {currentIndex + 1} / {OZONEXPRESS_IMAGES.length}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-serif font-bold text-[#fff8f0]">
+                  {OZONEXPRESS_IMAGES[currentIndex].title}
+                </h3>
+                <span className="text-xs font-mono text-[#D68379]">
+                  {currentIndex + 1} of {OZONEXPRESS_IMAGES.length}
                 </span>
               </div>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLightboxOpen(false);
-                }}
-                className="p-2.5 rounded-full bg-[#251110] border border-[#572A26] text-rose-200 hover:text-[#fff8f0] hover:bg-[#381B19] transition-colors"
+                onClick={() => setIsLightboxOpen(false)}
+                className="p-2.5 rounded-full bg-[#251110] text-rose-200 hover:text-[#fff8f0] border border-[#572A26] hover:border-[#D68379] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Prev Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePrev();
-              }}
-              className="absolute left-4 sm:left-8 p-3 rounded-full bg-[#251110]/80 border border-[#572A26] text-[#fff8f0] hover:bg-[#D68379] hover:text-[#1B0C0B] transition-all z-10 backdrop-blur-md"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-
-            {/* Image Preview */}
-            <motion.div
-              key={currentIndex}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              onClick={(e) => e.stopPropagation()}
-              className="max-w-4xl max-h-[80vh] rounded-2xl overflow-hidden shadow-2xl border border-[#572A26] bg-[#150B0A]"
-            >
+            {/* Lightbox Center Image */}
+            <div className="relative flex-1 flex items-center justify-center p-4">
               <img
                 src={OZONEXPRESS_IMAGES[currentIndex].url}
                 alt={OZONEXPRESS_IMAGES[currentIndex].title}
                 referrerPolicy="no-referrer"
-                className="w-full h-full max-h-[80vh] object-contain"
+                className="max-w-full max-h-[75vh] object-contain rounded-xl select-none"
               />
-            </motion.div>
 
-            {/* Next Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNext();
-              }}
-              className="absolute right-4 sm:right-8 p-3 rounded-full bg-[#251110]/80 border border-[#572A26] text-[#fff8f0] hover:bg-[#D68379] hover:text-[#1B0C0B] transition-all z-10 backdrop-blur-md"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+              {/* Prev / Next buttons */}
+              <button
+                onClick={handlePrev}
+                className="absolute left-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-[#1B0C0B]/90 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-2xl transition-all cursor-pointer"
+              >
+                <ChevronLeft className="w-6 h-6 rtl:rotate-180" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-3 rounded-full bg-[#1B0C0B]/90 hover:bg-[#D68379] text-rose-100 hover:text-[#1B0C0B] border border-[#572A26] backdrop-blur-md shadow-2xl transition-all cursor-pointer"
+              >
+                <ChevronRight className="w-6 h-6 rtl:rotate-180" />
+              </button>
+            </div>
+
+            {/* Bottom Details */}
+            <div className="text-center text-xs text-rose-300/70 max-w-xl mx-auto">
+              {OZONEXPRESS_IMAGES[currentIndex].description}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

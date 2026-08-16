@@ -3,20 +3,23 @@ import { motion } from 'motion/react';
 import { z } from 'zod';
 import confetti from 'canvas-confetti';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { Sparkles, Mail, Send, Phone, MapPin, CheckCircle2, AlertCircle, ArrowUpRight, Github, Linkedin, Instagram, Building2 } from 'lucide-react';
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid work email address'),
-  company: z.string().optional(),
-  engagementType: z.string().min(1, 'Please select an engagement type'),
-  projectType: z.string().min(1, 'Please select an area of interest'),
-  message: z.string().min(10, 'Message must be at least 10 characters long'),
-});
-
-type FormData = z.infer<typeof contactSchema>;
+import { Sparkles, Mail, Send, Phone, MapPin, CheckCircle2, AlertCircle, ArrowUpRight, Github, Linkedin, Building2 } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 export const Contact: React.FC = () => {
+  const { t, language } = useLanguage();
+
+  const contactSchema = z.object({
+    name: z.string().min(2, language === 'ar' ? 'يجب أن يكون الاسم حرفين على الأقل' : language === 'fr' ? 'Le nom doit comporter au moins 2 caractères' : 'Name must be at least 2 characters'),
+    email: z.string().email(language === 'ar' ? 'يرجى إدخال بريد إلكتروني صالح' : language === 'fr' ? 'Veuillez saisir une adresse e-mail valide' : 'Please enter a valid work email address'),
+    company: z.string().optional(),
+    engagementType: z.string().min(1, 'Please select an engagement type'),
+    projectType: z.string().min(1, 'Please select an area of interest'),
+    message: z.string().min(10, language === 'ar' ? 'يجب أن تكون الرسالة 10 أحرف على الأقل' : language === 'fr' ? 'Le message doit comporter au moins 10 caractères' : 'Message must be at least 10 characters long'),
+  });
+
+  type FormData = z.infer<typeof contactSchema>;
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -48,19 +51,18 @@ export const Contact: React.FC = () => {
   }, []);
 
   const engagementOptions = [
-    'Full-Time Job Role',
-    'Senior Permanent Position',
-    'Direct Contract',
-    'Remote / Hybrid Role',
+    { id: 'full-time', label: language === 'ar' ? 'وظيفة بدوام كامل' : language === 'fr' ? 'Poste à Temps Plein (CDI)' : 'Full-Time Position' },
+    { id: 'senior-role', label: language === 'ar' ? 'منصب مصمم / مطور رئيسي' : language === 'fr' ? 'Rôle Senior Designer / Dev' : 'Senior Design / Dev Role' },
+    { id: 'contract', label: language === 'ar' ? 'عقد عمل مباشر' : language === 'fr' ? 'Contrat Direct / Mission' : 'Direct Contract' },
+    { id: 'remote-hybrid', label: language === 'ar' ? 'عمل عن بعد / هجين' : language === 'fr' ? 'Télétravail / Hybride' : 'Remote / Hybrid Role' },
   ];
 
   const projectTypeOptions = [
-    'Senior Product Designer & Frontend Lead',
-    'Atomic Design System Engineering',
-    'Next.js & React 19 Web Architecture',
-    'Core Web Vitals & SLA Performance Tuning',
-    'Enterprise Digital Product Overhaul',
-    'Executive / Team Leadership Opportunity',
+    { value: 'Senior Product Designer & Frontend Lead', label: language === 'ar' ? 'مصمم منتجات رقمية ومطور واجهات أمامي' : language === 'fr' ? 'Lead Designer Produit & Frontend' : 'Senior Product Designer & Frontend Lead' },
+    { value: 'Atomic Design System Engineering', label: language === 'ar' ? 'هندسة أنظمة التصميم ورموز Figma' : language === 'fr' ? 'Ingénierie Design System Atomique' : 'Atomic Design System Engineering' },
+    { value: 'Next.js & React 19 Web Architecture', label: language === 'ar' ? 'معمارية تطبيقات Next.js و React' : language === 'fr' ? 'Architecture Web Next.js & React 19' : 'Next.js & React 19 Web Architecture' },
+    { value: 'Core Web Vitals & SLA Performance Tuning', label: language === 'ar' ? 'تحسين سرعة ومؤشرات Core Web Vitals' : language === 'fr' ? 'Optimisation Core Web Vitals & Vitesse' : 'Core Web Vitals & SLA Performance Tuning' },
+    { value: 'Enterprise Digital Product Overhaul', label: language === 'ar' ? 'تطوير وتحديث منصات وتطبيقات المؤسسات' : language === 'fr' ? 'Refonte de Plateforme Web Entreprise' : 'Enterprise Digital Product Overhaul' },
   ];
 
   const handleChange = (
@@ -104,7 +106,13 @@ export const Contact: React.FC = () => {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setSubmitSuccess(data.message || 'Inquiry sent successfully!');
+        setSubmitSuccess(
+          language === 'ar' 
+            ? 'تم إرسال رسالتك بنجاح! سأتواصل معك قريباً.' 
+            : language === 'fr' 
+            ? 'Message envoyé avec succès ! Je vous répondrai sous peu.' 
+            : data.message || 'Inquiry sent successfully!'
+        );
         setFormData({
           name: '',
           email: '',
@@ -121,10 +129,22 @@ export const Contact: React.FC = () => {
           colors: ['#D68379', '#C8746B', '#B85C52'],
         });
       } else {
-        setServerError(data.error || 'Failed to send message. Please try again.');
+        setServerError(
+          language === 'ar'
+            ? 'تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى أو التواصل عبر واتساب.'
+            : language === 'fr'
+            ? 'Échec de l’envoi. Veuillez réessayer ou utiliser WhatsApp.'
+            : data.error || 'Failed to send message. Please try again.'
+        );
       }
-    } catch (err) {
-      setServerError('An unexpected network error occurred. Please try contacting directly via email.');
+    } catch {
+      setServerError(
+        language === 'ar'
+          ? 'حدث خطأ في الشبكة. يرجى التواصل مباشرة عبر البريد الإلكتروني أو واتساب.'
+          : language === 'fr'
+          ? 'Une erreur réseau est survenue. Veuillez contacter directement par e-mail.'
+          : 'An unexpected network error occurred. Please try contacting directly via email.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -137,13 +157,13 @@ export const Contact: React.FC = () => {
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs font-display text-[#D68379] font-bold tracking-widest uppercase">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>07 // RECRUITMENT &amp; JOB INQUIRIES</span>
+            <span>{t('contact_kicker')}</span>
           </div>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#fff8f0]">
-            Contact Mesrour Directly.
+            {t('contact_title')}
           </h2>
           <p className="text-rose-200/80 max-w-xl text-base sm:text-lg font-sans font-light">
-            Actively seeking full-time Graphic Designer x Developer job roles. <strong className="text-[#D68379]">Notice: Solo specialist seeking employment — NOT a team or agency.</strong>
+            {t('contact_subtitle')}
           </p>
         </div>
       </div>
@@ -153,7 +173,7 @@ export const Contact: React.FC = () => {
         <div className="lg:col-span-5 space-y-8">
           <div className="p-8 rounded-3xl bg-[#251110] text-[#fff8f0] border border-[#572A26] space-y-6 shadow-xl">
             <span className="text-xs font-display text-[#D68379] font-bold uppercase tracking-widest block">
-              DIRECT CHANNELS &amp; CONTACT
+              {t('contact_direct_channels')}
             </span>
 
             <div className="space-y-4">
@@ -166,7 +186,9 @@ export const Contact: React.FC = () => {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-display text-rose-300/60 block uppercase">CORPORATE EMAIL</span>
+                  <span className="text-xs font-display text-rose-300/60 block uppercase">
+                    {t('contact_email_label')}
+                  </span>
                   <span className="text-sm font-display font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
                     {PERSONAL_INFO.email}
                   </span>
@@ -184,9 +206,11 @@ export const Contact: React.FC = () => {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-display text-rose-300/60 block uppercase">DIRECT PHONE / WHATSAPP</span>
+                  <span className="text-xs font-display text-rose-300/60 block uppercase">
+                    {t('contact_phone_label')}
+                  </span>
                   <span className="text-sm font-display font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
-                    {PERSONAL_INFO.phone}
+                    WhatsApp Chat
                   </span>
                 </div>
               </a>
@@ -196,7 +220,9 @@ export const Contact: React.FC = () => {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-display text-rose-300/60 block uppercase">LOCATION &amp; TIMEZONE</span>
+                  <span className="text-xs font-display text-rose-300/60 block uppercase">
+                    {t('contact_location_label')}
+                  </span>
                   <span className="text-sm font-display font-bold text-[#fff8f0]">
                     {PERSONAL_INFO.location} (UTC+1)
                   </span>
@@ -208,7 +234,7 @@ export const Contact: React.FC = () => {
           {/* Social Profiles Grid */}
           <div className="space-y-3">
             <span className="text-xs font-display text-rose-300/70 uppercase tracking-widest block font-semibold">
-              PROFESSIONAL NETWORKS &amp; REPOSITORIES
+              {t('contact_social_label')}
             </span>
             <div className="flex flex-wrap gap-2">
               <a
@@ -236,7 +262,7 @@ export const Contact: React.FC = () => {
                 className="px-4 py-2.5 rounded-2xl bg-[#251110] border border-[#572A26] text-xs font-display font-bold text-rose-200 hover:border-[#D68379] hover:text-[#fff8f0] flex items-center gap-1.5 transition-colors"
               >
                 <span>Behance</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 rtl:rotate-90" />
               </a>
               <a
                 href={PERSONAL_INFO.socials.dribbble}
@@ -245,7 +271,7 @@ export const Contact: React.FC = () => {
                 className="px-4 py-2.5 rounded-2xl bg-[#251110] border border-[#572A26] text-xs font-display font-bold text-rose-200 hover:border-[#D68379] hover:text-[#fff8f0] flex items-center gap-1.5 transition-colors"
               >
                 <span>Dribbble</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 rtl:rotate-90" />
               </a>
             </div>
           </div>
@@ -259,9 +285,11 @@ export const Contact: React.FC = () => {
           >
             <div className="flex items-center justify-between border-b border-[#381B19] pb-4">
               <h3 className="text-xl font-serif font-bold text-[#fff8f0]">
-                RECRUITMENT &amp; CORPORATE INQUIRY FORM
+                {t('contact_form_title')}
               </h3>
-              <span className="text-xs font-display text-[#D68379] font-bold uppercase tracking-wider">CONFIDENTIAL</span>
+              <span className="text-xs font-display text-[#D68379] font-bold uppercase tracking-wider">
+                {t('contact_form_confidential')}
+              </span>
             </div>
 
             {submitSuccess && (
@@ -290,14 +318,14 @@ export const Contact: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-display uppercase font-semibold text-rose-200">
-                  Full Name *
+                  {t('contact_input_name')} *
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="e.g. Jean-Luc Picard"
+                  placeholder={language === 'ar' ? 'مثال: محمد العمري' : language === 'fr' ? 'ex. Jean-Luc Picard' : 'e.g. Jean-Luc Picard'}
                   className={`w-full px-4 py-3 rounded-xl bg-[#150B0A] border ${
                     errors.name ? 'border-red-500' : 'border-[#381B19]'
                   } focus:outline-none focus:border-[#D68379] text-sm text-[#fff8f0] font-sans`}
@@ -307,14 +335,14 @@ export const Contact: React.FC = () => {
 
               <div className="space-y-2">
                 <label className="text-xs font-display uppercase font-semibold text-rose-200">
-                  Work Email *
+                  {t('contact_input_email')} *
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="e.g. j.picard@company.com"
+                  placeholder={language === 'ar' ? 'مثال: mohamed@company.com' : 'e.g. j.picard@company.com'}
                   className={`w-full px-4 py-3 rounded-xl bg-[#150B0A] border ${
                     errors.email ? 'border-red-500' : 'border-[#381B19]'
                   } focus:outline-none focus:border-[#D68379] text-sm text-[#fff8f0] font-sans`}
@@ -327,14 +355,14 @@ export const Contact: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-display uppercase font-semibold text-rose-200 flex items-center gap-1.5">
                 <Building2 className="w-3.5 h-3.5 text-[#D68379]" />
-                <span>Company / Organization Name</span>
+                <span>{t('contact_input_company')}</span>
               </label>
               <input
                 type="text"
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
-                placeholder="e.g. Enterprise Software Corp / Agency Name"
+                placeholder={language === 'ar' ? 'اسم الشركة أو الوكالة' : language === 'fr' ? 'ex. Nom de l’entreprise / Agence' : 'e.g. Enterprise Software Corp / Agency Name'}
                 className="w-full px-4 py-3 rounded-xl bg-[#150B0A] border border-[#381B19] focus:outline-none focus:border-[#D68379] text-sm text-[#fff8f0] font-sans"
               />
             </div>
@@ -342,21 +370,21 @@ export const Contact: React.FC = () => {
             {/* Engagement Model */}
             <div className="space-y-2">
               <label className="text-xs font-display uppercase font-semibold text-rose-200">
-                Opportunity / Engagement Type *
+                {t('contact_input_opportunity')} *
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {engagementOptions.map((opt) => (
                   <button
-                    key={opt}
+                    key={opt.id}
                     type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, engagementType: opt }))}
-                    className={`py-2.5 px-3 rounded-xl text-xs font-display font-bold border transition-all ${
-                      formData.engagementType === opt
+                    onClick={() => setFormData((prev) => ({ ...prev, engagementType: opt.id }))}
+                    className={`py-2.5 px-3 rounded-xl text-xs font-display font-bold border transition-all cursor-pointer ${
+                      formData.engagementType === opt.id
                         ? 'bg-gradient-to-r from-[#B85C52] to-[#D68379] text-[#fff8f0] border-[#D68379]'
                         : 'bg-[#150B0A] border-[#381B19] text-rose-200 hover:border-[#D68379]'
                     }`}
                   >
-                    {opt}
+                    {opt.label}
                   </button>
                 ))}
               </div>
@@ -365,7 +393,7 @@ export const Contact: React.FC = () => {
             {/* Technical Capability / Scope */}
             <div className="space-y-2">
               <label className="text-xs font-display uppercase font-semibold text-rose-200">
-                Primary Area of Focus / Role *
+                {t('contact_input_role')} *
               </label>
               <select
                 name="projectType"
@@ -374,8 +402,8 @@ export const Contact: React.FC = () => {
                 className="w-full px-4 py-3 rounded-xl bg-[#150B0A] border border-[#381B19] focus:outline-none focus:border-[#D68379] text-sm text-[#fff8f0] font-sans"
               >
                 {projectTypeOptions.map((opt) => (
-                  <option key={opt} value={opt} className="bg-[#150B0A] text-[#fff8f0]">
-                    {opt}
+                  <option key={opt.value} value={opt.value} className="bg-[#150B0A] text-[#fff8f0]">
+                    {opt.label}
                   </option>
                 ))}
               </select>
@@ -384,14 +412,20 @@ export const Contact: React.FC = () => {
             {/* Message Textarea */}
             <div className="space-y-2">
               <label className="text-xs font-display uppercase font-semibold text-rose-200">
-                Message &amp; Role Details *
+                {t('contact_input_message')} *
               </label>
               <textarea
                 name="message"
                 rows={4}
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Share details regarding your full-time job opening, Graphic Design & Development scope, remote/hybrid policy, or timeline..."
+                placeholder={
+                  language === 'ar'
+                    ? 'شارك تفاصيل متطلبات الوظيفة، نطاق العمل، أو سياسة العمل عن بعد...'
+                    : language === 'fr'
+                    ? 'Partagez les détails de votre offre d’emploi, vos besoins en design/dév...'
+                    : 'Share details regarding your full-time job opening, Graphic Design & Development scope, remote/hybrid policy, or timeline...'
+                }
                 className={`w-full px-4 py-3 rounded-xl bg-[#150B0A] border ${
                   errors.message ? 'border-red-500' : 'border-[#381B19]'
                 } focus:outline-none focus:border-[#D68379] text-sm text-[#fff8f0] font-sans`}
@@ -403,15 +437,15 @@ export const Contact: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm sm:text-base uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 disabled:opacity-50"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm sm:text-base uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 disabled:opacity-50 cursor-pointer"
               data-cursor="SUBMIT"
             >
               {isSubmitting ? (
-                <span>Sending Message...</span>
+                <span>{t('contact_btn_sending')}</span>
               ) : (
                 <>
-                  <span>Send Job Opportunity Inquiry</span>
-                  <Send className="w-4 h-4" />
+                  <span>{t('contact_btn_send')}</span>
+                  <Send className="w-4 h-4 rtl:-scale-x-100" />
                 </>
               )}
             </button>

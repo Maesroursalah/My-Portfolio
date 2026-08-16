@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Sparkles, Layers, Image as ImageIcon, Sparkle, Tag, Video, Palette, Printer, Folder } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Layers, Video, Palette, Printer } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from './LanguageContext';
 
 interface GraphicDesignViewProps {
   onNavigateHome?: () => void;
@@ -10,12 +11,13 @@ interface GraphicDesignViewProps {
 type CategoryType = 'social-media-ads' | 'logo' | 'print-works';
 
 export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigateHome, onSelectProject }) => {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('social-media-ads');
 
   const categories: { id: CategoryType; label: string; count: number; icon: React.FC<{ className?: string }> }[] = [
-    { id: 'social-media-ads', label: 'Social media ads', count: 2, icon: Video },
-    { id: 'logo', label: 'Logo', count: 1, icon: Palette },
-    { id: 'print-works', label: 'Print works', count: 1, icon: Printer },
+    { id: 'social-media-ads', label: t('cat_social_media'), count: 2, icon: Video },
+    { id: 'logo', label: t('cat_logo'), count: 1, icon: Palette },
+    { id: 'print-works', label: t('cat_print'), count: 1, icon: Printer },
   ];
 
   return (
@@ -25,15 +27,15 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
         {onNavigateHome && (
           <button
             onClick={onNavigateHome}
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2 cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-            <span>Back to Home Overview</span>
+            <span>{t('nav_back_home')}</span>
           </button>
         )}
 
         <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0]">
-          Graphic Design
+          {t('graphic_view_title')}
         </h1>
       </div>
 
@@ -42,10 +44,10 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-mono text-rose-300/70 uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D68379] animate-pulse" />
-            <span>Filter by Category</span>
+            <span>{t('graphic_filter_category')}</span>
           </div>
           <span className="text-[11px] font-mono text-rose-300/50">
-            3 Categories Available
+            {t('graphic_categories_available')}
           </span>
         </div>
 
@@ -58,7 +60,7 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`relative z-10 px-4 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2.5 select-none ${
+                className={`relative z-10 px-4 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2.5 select-none cursor-pointer ${
                   isActive
                     ? 'text-[#fff8f0]'
                     : 'text-rose-200/65 hover:text-[#fff8f0] hover:bg-[#2C1311]/50'
@@ -115,10 +117,10 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-display font-bold border border-[#572A26] uppercase tracking-wider">
                   <Layers className="w-3.5 h-3.5" />
-                  Category
+                  {t('cat_social_media')}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fff8f0]">
-                  Social media ads
+                  {t('cat_social_media')}
                 </h2>
               </div>
 
@@ -159,11 +161,16 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
 
                   {/* Details Section */}
                   <div className="pt-1 flex items-center justify-between">
-                    <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
-                      OZONEXPRESS
-                    </h3>
-                    <span className="text-xs font-mono text-rose-300/60 uppercase">
-                      View Gallery &rarr;
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_ozonexpress_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_ozonexpress_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
                     </span>
                   </div>
                 </motion.div>
@@ -206,11 +213,16 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
 
                   {/* Details Section */}
                   <div className="pt-1 flex items-center justify-between">
-                    <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
-                      Momento ADS
-                    </h3>
-                    <span className="text-xs font-mono text-rose-300/60 uppercase">
-                      View Gallery &rarr;
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_momento_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_momento_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
                     </span>
                   </div>
                 </motion.div>
@@ -231,10 +243,10 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-display font-bold border border-[#572A26] uppercase tracking-wider">
                   <Layers className="w-3.5 h-3.5" />
-                  Category
+                  {t('cat_logo')}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fff8f0]">
-                  Logo
+                  {t('cat_logo')}
                 </h2>
               </div>
 
@@ -274,11 +286,16 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
 
                   {/* Details Section */}
                   <div className="pt-1 flex items-center justify-between">
-                    <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
-                      BELIVE
-                    </h3>
-                    <span className="text-xs font-mono text-rose-300/60 uppercase">
-                      View Gallery &rarr;
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_belive_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_belive_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
                     </span>
                   </div>
                 </motion.div>
@@ -299,10 +316,10 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-display font-bold border border-[#572A26] uppercase tracking-wider">
                   <Layers className="w-3.5 h-3.5" />
-                  Category
+                  {t('cat_print')}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fff8f0]">
-                  Print works
+                  {t('cat_print')}
                 </h2>
               </div>
 
@@ -342,11 +359,16 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
 
                   {/* Details Section */}
                   <div className="pt-1 flex items-center justify-between">
-                    <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
-                      Black hole designs
-                    </h3>
-                    <span className="text-xs font-mono text-rose-300/60 uppercase">
-                      View Gallery &rarr;
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_blackhole_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_blackhole_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
                     </span>
                   </div>
                 </motion.div>

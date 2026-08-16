@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, Briefcase, Wrench, User, Layers, Mail, FileText } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface MobileBottomNavProps {
   activePage: string;
@@ -7,11 +8,13 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activePage, setActivePage }) => {
+  const { t } = useLanguage();
+
   const tabs = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'work', label: 'Work', icon: Briefcase },
-    { id: 'services', label: 'Skills', icon: Wrench },
-    { id: 'about', label: 'About', icon: User },
+    { id: 'home', label: t('nav_home'), icon: Home },
+    { id: 'work', label: t('nav_work'), icon: Briefcase },
+    { id: 'services', label: t('nav_services'), icon: Wrench },
+    { id: 'about', label: t('nav_about'), icon: User },
   ];
 
   return (

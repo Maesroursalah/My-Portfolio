@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeProvider } from './components/ThemeContext';
+import { LanguageProvider } from './components/LanguageContext';
 import { Preloader } from './components/Preloader';
 import { CanvasBackground } from './components/CanvasBackground';
 import { Navbar } from './components/Navbar';
@@ -124,7 +125,8 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <div className="relative min-h-screen bg-[#150B0A] dark:bg-[#150B0A] text-[#fff8f0] font-sans selection:bg-[#D68379] selection:text-[#ffffff] transition-colors duration-300 overflow-x-hidden">
+      <LanguageProvider>
+        <div className="relative min-h-screen bg-[#150B0A] dark:bg-[#150B0A] text-[#fff8f0] font-sans selection:bg-[#D68379] selection:text-[#ffffff] transition-colors duration-300 overflow-x-hidden">
         {/* Preloader Counter */}
         {loading && <Preloader onComplete={() => setLoading(false)} />}
 
@@ -429,6 +431,7 @@ export default function App() {
         {/* Mobile App Dock Navigation Bar */}
         <MobileBottomNav activePage={activePage} setActivePage={handlePageChange} />
       </div>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

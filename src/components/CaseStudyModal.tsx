@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CaseStudy } from '../types';
-import { X, ExternalLink, CheckCircle2, TrendingUp, Calendar, Tag, Layers, ArrowLeft, Globe, Eye } from 'lucide-react';
+import { X, ExternalLink, CheckCircle2, TrendingUp, Calendar, Layers, ArrowLeft } from 'lucide-react';
 import { BrandIdentitySection } from './BrandIdentitySection';
+import { useLanguage } from './LanguageContext';
 
 interface CaseStudyModalProps {
   caseStudy: CaseStudy | null;
@@ -10,6 +11,8 @@ interface CaseStudyModalProps {
 }
 
 export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClose }) => {
+  const { t, language } = useLanguage();
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -54,11 +57,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
           <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-[#150B0A]/95 backdrop-blur-md border-b border-[#381B19]">
             <button
               onClick={onClose}
-              className="group flex items-center gap-2 text-xs font-display font-bold text-rose-300/80 hover:text-[#D68379] transition-colors"
+              className="group flex items-center gap-2 text-xs font-display font-bold text-rose-300/80 hover:text-[#D68379] transition-colors cursor-pointer"
               data-cursor="BACK"
             >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>CLOSE CASE STUDY</span>
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
+              <span>{t('modal_close')}</span>
             </button>
 
             <div className="flex items-center gap-3">
@@ -67,7 +70,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                   href={caseStudy.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative group overflow-hidden px-4 py-1.5 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-xs flex items-center gap-2 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-md"
+                  className="relative group overflow-hidden px-4 py-1.5 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-xs flex items-center gap-2 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-md cursor-pointer"
                   data-cursor="VISIT"
                 >
                   {/* Live Ping Dot */}
@@ -76,11 +79,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
                   </span>
 
-                  {/* Shimmer sweep */}
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-shimmer" />
-
-                  <span className="relative z-10 tracking-wide">View Live</span>
-                  <ExternalLink className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                  <span className="relative z-10 tracking-wide">{t('modal_view_live')}</span>
+                  <ExternalLink className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300 rtl:-scale-x-100" />
                 </a>
               )}
               <span className="text-xs font-display px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] font-bold border border-[#572A26]">
@@ -88,7 +88,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               </span>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full border border-[#572A26] bg-[#251110] hover:border-[#D68379] text-rose-200 hover:text-[#D68379] transition-colors"
+                className="p-2 rounded-full border border-[#572A26] bg-[#251110] hover:border-[#D68379] text-rose-200 hover:text-[#D68379] transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -103,11 +103,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-display text-rose-300/60 border-b border-[#381B19] pb-3">
                 <span className="flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-[#D68379]" />
-                  CLIENT: <strong className="text-[#fff8f0] font-bold">{caseStudy.client}</strong>
+                  {t('modal_client')}: <strong className="text-[#fff8f0] font-bold">{caseStudy.client}</strong>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-[#D68379]" />
-                  YEAR: <strong className="text-[#fff8f0] font-bold">{caseStudy.year}</strong>
+                  {t('modal_year')}: <strong className="text-[#fff8f0] font-bold">{caseStudy.year}</strong>
                 </span>
               </div>
 
@@ -126,20 +126,16 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                     href={caseStudy.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group overflow-hidden px-8 py-3.5 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm flex items-center gap-3 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-xl"
+                    className="relative group overflow-hidden px-8 py-3.5 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm flex items-center gap-3 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-xl cursor-pointer"
                     data-cursor="VISIT"
                   >
-                    {/* Live Radar Ping Dot */}
                     <span className="relative flex h-3 w-3 shrink-0">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-90"></span>
                       <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400 shadow-[0_0_10px_#34d399]"></span>
                     </span>
 
-                    {/* Shimmer sweep */}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:animate-shimmer" />
-
-                    <span className="relative z-10 tracking-wide">View Live Prototype</span>
-                    <ExternalLink className="w-4 h-4 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    <span className="relative z-10 tracking-wide">{t('modal_view_live')}</span>
+                    <ExternalLink className="w-4 h-4 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300 rtl:-scale-x-100" />
                   </a>
                 </div>
               )}
@@ -149,25 +145,25 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-2xl bg-[#251110] border border-[#572A26] text-xs font-sans">
                   {caseStudy.projectType && (
                     <div className="space-y-1">
-                      <span className="font-display font-bold text-[#D68379] uppercase block">Project Type</span>
+                      <span className="font-display font-bold text-[#D68379] uppercase block">{t('modal_project_type')}</span>
                       <span className="text-[#fff8f0] font-medium">{caseStudy.projectType}</span>
                     </div>
                   )}
                   {caseStudy.industry && (
                     <div className="space-y-1">
-                      <span className="font-display font-bold text-[#D68379] uppercase block">Industry</span>
+                      <span className="font-display font-bold text-[#D68379] uppercase block">{t('modal_industry')}</span>
                       <span className="text-[#fff8f0] font-medium">{caseStudy.industry}</span>
                     </div>
                   )}
                   {caseStudy.targetAudience && (
                     <div className="space-y-1">
-                      <span className="font-display font-bold text-[#D68379] uppercase block">Target Audience</span>
+                      <span className="font-display font-bold text-[#D68379] uppercase block">{t('modal_audience')}</span>
                       <span className="text-[#fff8f0] font-medium">{caseStudy.targetAudience}</span>
                     </div>
                   )}
                   {caseStudy.coreFocus && (
                     <div className="space-y-1">
-                      <span className="font-display font-bold text-[#D68379] uppercase block">Core Focus</span>
+                      <span className="font-display font-bold text-[#D68379] uppercase block">{t('modal_focus')}</span>
                       <span className="text-[#fff8f0] font-medium">{caseStudy.coreFocus}</span>
                     </div>
                   )}
@@ -179,7 +175,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
             <div className="p-6 sm:p-8 rounded-3xl bg-[#251110] border border-[#572A26] space-y-3">
               <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#D68379]" />
-                1. PROJECT OVERVIEW
+                {t('modal_overview_title')}
               </h3>
               <p className="text-sm sm:text-base text-rose-200/90 leading-relaxed font-sans font-light">
                 {caseStudy.process}
@@ -191,7 +187,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               <div className="p-6 sm:p-8 rounded-3xl bg-[#251110] border border-[#572A26] space-y-4">
                 <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#D68379]" />
-                  2. DESIGN SYSTEM &amp; BRAND IDENTITY
+                  {t('modal_design_system_title')}
                 </h3>
                 <p className="text-sm sm:text-base text-rose-200/90 leading-relaxed font-sans font-light">
                   {caseStudy.designSystemSpecs.summary}
@@ -220,19 +216,23 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
             <div className="p-6 sm:p-8 rounded-3xl bg-[#251110] border border-[#572A26] space-y-5">
               <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-rose-500" />
-                3. THE CHALLENGE &amp; CORE SOLUTIONS
+                {t('modal_challenge_solution_title')}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-5 rounded-2xl bg-[#150B0A] border border-[#381B19] space-y-2">
-                  <span className="text-xs font-display font-bold text-rose-400 uppercase block">The Challenge</span>
+                  <span className="text-xs font-display font-bold text-rose-400 uppercase block">
+                    {t('modal_the_challenge')}
+                  </span>
                   <p className="text-sm text-rose-200/80 leading-relaxed font-sans font-light">
                     {caseStudy.problem}
                   </p>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-[#150B0A] border border-[#381B19] space-y-2">
-                  <span className="text-xs font-display font-bold text-emerald-400 uppercase block">Core Solution</span>
+                  <span className="text-xs font-display font-bold text-emerald-400 uppercase block">
+                    {t('modal_core_solution')}
+                  </span>
                   <p className="text-sm text-rose-200/80 leading-relaxed font-sans font-light">
                     {caseStudy.solution}
                   </p>
@@ -246,7 +246,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                 <div className="space-y-1">
                   <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#D68379]" />
-                    3. MY ROLE — {caseStudy.myRoleSpecs.title}
+                    {language === 'ar' ? `دوري ومسؤولياتي — ${caseStudy.myRoleSpecs.title}` : language === 'fr' ? `Mon Rôle — ${caseStudy.myRoleSpecs.title}` : `MY ROLE — ${caseStudy.myRoleSpecs.title}`}
                   </h3>
                   <p className="text-sm text-rose-200/80 font-sans">
                     {caseStudy.myRoleSpecs.description}
@@ -269,7 +269,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               <div className="p-6 rounded-3xl bg-[#251110] border border-[#572A26] space-y-4">
                 <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#D68379]" />
-                  4. TECH STACK &amp; PROFESSIONAL TOOLS
+                  {t('modal_tech_stack_title')}
                 </h3>
                 <div className="flex flex-wrap gap-2.5">
                   {caseStudy.techStackTools.map((tool, idx) => (
@@ -289,7 +289,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               <div className="p-6 rounded-3xl bg-[#251110] border border-[#572A26] space-y-4">
                 <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#D68379]" />
-                  5. KEY PLATFORM FEATURES
+                  {t('modal_key_features_title')}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {caseStudy.keyPlatformFeatures.map((feat, idx) => (
@@ -310,13 +310,15 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               <div className="p-6 rounded-3xl bg-[#251110] border border-[#572A26] space-y-4">
                 <h3 className="text-xl font-serif font-bold text-[#D68379] flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  6. PROJECT RESULTS &amp; STRATEGIC TAKEAWAYS
+                  {t('modal_results_title')}
                 </h3>
                 <p className="text-sm sm:text-base text-rose-200/90 leading-relaxed font-sans font-light">
                   {caseStudy.strategicTakeaway.summary}
                 </p>
                 <div className="p-5 rounded-2xl bg-[#150B0A] border border-[#D68379]/40 space-y-2">
-                  <span className="text-xs font-display font-bold text-[#D68379] uppercase block">Key Growth Takeaway</span>
+                  <span className="text-xs font-display font-bold text-[#D68379] uppercase block">
+                    {language === 'ar' ? 'الخلاصة الاستراتيجية' : language === 'fr' ? 'Leçon Stratégique Clé' : 'Key Growth Takeaway'}
+                  </span>
                   <p className="text-xs sm:text-sm text-[#fff8f0] font-sans leading-relaxed italic">
                     "{caseStudy.strategicTakeaway.keyGrowthTakeaway}"
                   </p>
@@ -324,7 +326,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               </div>
             )}
 
-            {/* Brand Identity & Design System Specs (Color Palette, Police de caractères, Scent Pyramid) */}
+            {/* Brand Identity & Design System Specs */}
             <BrandIdentitySection
               colorPalette={caseStudy.colorPalette}
               typography={caseStudy.typography}
@@ -346,13 +348,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               ))}
             </div>
 
-
-
             {/* Key Deliverables */}
             <div className="space-y-4 p-6 sm:p-8 rounded-2xl bg-[#251110] text-[#fff8f0] border border-[#572A26]">
               <h3 className="text-lg font-serif font-bold text-[#D68379] flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#D68379]" />
-                KEY DELIVERABLES &amp; ASSETS PRODUCED
+                {t('modal_deliverables_title')}
               </h3>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-rose-200/90 font-sans">
                 {caseStudy.deliverables.map((item, idx) => (
@@ -364,26 +364,6 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
               </ul>
             </div>
 
-            {/* Gallery Showcase */}
-            {caseStudy.gallery && caseStudy.gallery.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-serif font-bold text-[#fff8f0] flex items-center gap-2">
-                  <Tag className="w-5 h-5 text-[#D68379]" />
-                  VISUAL GALLERY &amp; DESIGN SYSTEM SHOWCASE
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {caseStudy.gallery.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className="rounded-2xl overflow-hidden border border-[#572A26] aspect-[4/3] shadow-md"
-                    >
-                      <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Bottom Actions Footer */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#381B19]">
               <div className="flex items-center gap-4">
@@ -392,29 +372,25 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ caseStudy, onClo
                     href={caseStudy.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group overflow-hidden px-6 py-3 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm flex items-center gap-3 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-xl"
+                    className="relative group overflow-hidden px-6 py-3 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm flex items-center gap-3 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-xl cursor-pointer"
                     data-cursor="VISIT"
                   >
-                    {/* Live Radar Ping Dot */}
                     <span className="relative flex h-2.5 w-2.5 shrink-0">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-90"></span>
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
                     </span>
 
-                    {/* Shimmer sweep */}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:animate-shimmer" />
-
-                    <span className="relative z-10 tracking-wide">View Live Prototype</span>
-                    <ExternalLink className="w-4 h-4 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    <span className="relative z-10 tracking-wide">{t('modal_view_live')}</span>
+                    <ExternalLink className="w-4 h-4 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300 rtl:-scale-x-100" />
                   </a>
                 )}
               </div>
 
               <button
                 onClick={onClose}
-                className="px-6 py-3 rounded-full bg-[#251110] border border-[#572A26] text-rose-200 hover:text-[#fff8f0] font-display text-xs"
+                className="px-6 py-3 rounded-full bg-[#251110] border border-[#572A26] text-rose-200 hover:text-[#fff8f0] font-display text-xs cursor-pointer"
               >
-                Close Window Esc
+                {t('modal_close')}
               </button>
             </div>
           </div>
