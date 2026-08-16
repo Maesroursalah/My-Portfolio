@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Sparkles, Layers, Image as ImageIcon, Sparkle, Tag } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Sparkles, Layers, Image as ImageIcon, Sparkle, Tag, Video, Palette, Printer, Folder } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface GraphicDesignViewProps {
@@ -12,10 +12,10 @@ type CategoryType = 'social-media-ads' | 'logo' | 'print-works';
 export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigateHome, onSelectProject }) => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('social-media-ads');
 
-  const categories: { id: CategoryType; label: string; count: number }[] = [
-    { id: 'social-media-ads', label: 'Social media ads', count: 2 },
-    { id: 'logo', label: 'Logo', count: 1 },
-    { id: 'print-works', label: 'Print works', count: 1 },
+  const categories: { id: CategoryType; label: string; count: number; icon: React.FC<{ className?: string }> }[] = [
+    { id: 'social-media-ads', label: 'Social media ads', count: 2, icon: Video },
+    { id: 'logo', label: 'Logo', count: 1, icon: Palette },
+    { id: 'print-works', label: 'Print works', count: 1, icon: Printer },
   ];
 
   return (
@@ -39,31 +39,55 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
 
       {/* Categories Selector Bar */}
       <div className="space-y-3 pt-2">
-        <div className="flex items-center gap-2 text-xs font-mono text-rose-300/60 uppercase tracking-wider">
-          <Tag className="w-3.5 h-3.5 text-[#D68379]" />
-          <span>Select Category</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-mono text-rose-300/70 uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D68379] animate-pulse" />
+            <span>Filter by Category</span>
+          </div>
+          <span className="text-[11px] font-mono text-rose-300/50">
+            3 Categories Available
+          </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 p-1.5 rounded-2xl bg-[#1B0C0B] border border-[#572A26] w-fit shadow-lg">
+        {/* Redesigned Category Selector Container */}
+        <div className="relative inline-flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-gradient-to-b from-[#220E0D] to-[#160807] border border-[#522521] shadow-2xl backdrop-blur-xl">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
+            const Icon = cat.icon;
             return (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`relative px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2.5 ${
+                className={`relative z-10 px-4 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2.5 select-none ${
                   isActive
-                    ? 'bg-[#381B19] text-[#fff8f0] border border-[#D68379] shadow-md'
-                    : 'text-rose-200/70 hover:text-[#fff8f0] hover:bg-[#251110] border border-transparent'
+                    ? 'text-[#fff8f0]'
+                    : 'text-rose-200/65 hover:text-[#fff8f0] hover:bg-[#2C1311]/50'
                 }`}
               >
-                <span>{cat.label}</span>
+                {/* Active Animated Background Pill */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeCategoryPill"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#3D1D1A] to-[#4F2320] border border-[#D68379]/70 shadow-lg shadow-[#D68379]/15"
+                    transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                  />
+                )}
+
+                <span className="relative z-10 flex items-center gap-2">
+                  <Icon
+                    className={`w-3.5 h-3.5 transition-colors ${
+                      isActive ? 'text-[#D68379]' : 'text-rose-300/60'
+                    }`}
+                  />
+                  <span>{cat.label}</span>
+                </span>
+
                 {cat.count > 0 && (
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                    className={`relative z-10 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold transition-colors ${
                       isActive
-                        ? 'bg-[#D68379] text-[#1B0C0B]'
-                        : 'bg-[#251110] text-rose-300/60'
+                        ? 'bg-[#D68379] text-[#1B0C0B] shadow-sm'
+                        : 'bg-[#2A1211] text-rose-300/70 border border-[#431B18]'
                     }`}
                   >
                     {cat.count}
@@ -155,17 +179,20 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                 >
                   {/* Visual Thumbnail Frame */}
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-2">
-                    <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/M%20-%201.png"
-                      alt="Momento ADS Campaign"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
+                    <video
+                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/momento.webm"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
                     
                     <div className="absolute top-3 left-3">
-                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-[#D68379] border border-[#381B19] backdrop-blur-md">
-                        3 Creatives
+                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-[#D68379] border border-[#381B19] backdrop-blur-md flex items-center gap-1.5">
+                        <Video className="w-3 h-3" />
+                        3 Motion Ads
                       </span>
                     </div>
 

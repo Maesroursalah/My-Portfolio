@@ -65,26 +65,26 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="flex flex-wrap items-center justify-center gap-4 pt-2"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-2 w-full max-w-xs sm:max-w-none mx-auto"
         >
           <button
             onClick={() => handleNav('work')}
-            className="group px-8 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30"
+            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30"
             data-cursor="DEVELOPMENT"
           >
-            <Code className="w-4 h-4" />
-            <span>Web Development</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <Code className="w-4 h-4 shrink-0" />
+            <span className="whitespace-nowrap">View The Works</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
           </button>
 
           <button
             onClick={() => handleNav('graphic-design')}
-            className="group px-8 py-4 rounded-full bg-[#251110] border-2 border-[#572A26] hover:border-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center gap-3 hover:bg-[#381B19] transition-all shadow-xl shadow-black/60"
+            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-[#251110] border-2 border-[#572A26] hover:border-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:bg-[#381B19] transition-all shadow-xl shadow-black/60"
             data-cursor="GRAPHIC DESIGN"
           >
-            <Palette className="w-4 h-4 text-[#D68379]" />
-            <span>Graphic Design</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#D68379]" />
+            <Palette className="w-4 h-4 text-[#D68379] shrink-0" />
+            <span className="whitespace-nowrap">Graphic Design</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#D68379] shrink-0" />
           </button>
         </motion.div>
 

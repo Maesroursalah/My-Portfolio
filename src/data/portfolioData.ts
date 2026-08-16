@@ -475,7 +475,9 @@ export const TESTIMONIALS: Testimonial[] = [];
 export const CLIENT_LOGOS = [
   { name: "PRISM", logo: "PRISM" },
   { name: "ZAPHYRE", logo: "ZAPHYRE" },
-  { name: "MOMENTO", logo: "MOMENTO" }
+  { name: "MOMENTO", logo: "MOMENTO" },
+  { name: "OZONEXPRESS", logo: "OZONEXPRESS" },
+  { name: "BELIVER", logo: "BELIVER" }
 ];
 
 export const PROCESS_STEPS: Array<{

@@ -28,6 +28,7 @@ import { ArrowRight, ArrowLeft, Sparkles, FolderGit2, ShieldCheck, Briefcase, Fi
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [showSelectedWork, setShowSelectedWork] = useState(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
   // Router active page state synced with hash
@@ -42,12 +43,23 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#/', '').replace('#', '');
-      if (['home', 'work', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'about', 'skills', 'process', 'case-study'].includes(hash)) {
+      if (hash === 'about') {
+        setActivePage('home');
+        setTimeout(() => {
+          const el = document.querySelector('#about');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else if (['home', 'work', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'skills', 'process', 'case-study'].includes(hash)) {
         setActivePage(hash);
       } else if (!hash) {
         setActivePage('home');
       }
     };
+
+    // Check initial hash on mount
+    if (window.location.hash.includes('about')) {
+      handleHashChange();
+    }
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
@@ -56,8 +68,20 @@ export default function App() {
   // Ref to Lenis instance for programmatic instant scrolling
   const lenisRef = React.useRef<Lenis | null>(null);
 
-  // Page change handler that resets scroll instantly to top and sets page
+  // Page change handler that resets scroll or scrolls to target section
   const handlePageChange = (page: string) => {
+    if (page === 'about') {
+      setActivePage('home');
+      window.location.hash = '#about';
+      setTimeout(() => {
+        const el = document.querySelector('#about');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return;
+    }
+
     setActivePage(page);
     window.location.hash = page === 'home' ? '' : `#${page}`;
     if (lenisRef.current) {
@@ -123,9 +147,43 @@ export default function App() {
                 transition={{ duration: 0.3 }}
                 className="space-y-16"
               >
-                <Hero onNavigate={handlePageChange} />
+                <Hero onNavigate={(page) => {
+                  if (page === 'work') {
+                    setShowSelectedWork(true);
+                    setTimeout(() => {
+                      const el = document.querySelector('#work');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  } else {
+                    handlePageChange(page);
+                  }
+                }} />
                 <Marquee />
-                <SelectedWork onSelectCaseStudy={handleSelectCaseStudy} />
+
+                {/* Selected Works section revealed on click */}
+                {showSelectedWork && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="space-y-4"
+                  >
+                    <div className="max-w-7xl mx-auto px-4 flex justify-end">
+                      <button
+                        onClick={() => setShowSelectedWork(false)}
+                        className="px-4 py-1.5 rounded-full bg-[#251110] hover:bg-[#381B19] border border-[#572A26] text-rose-300 text-xs font-mono transition-colors"
+                      >
+                        ✕ Hide Works Section
+                      </button>
+                    </div>
+                    <SelectedWork onSelectCaseStudy={handleSelectCaseStudy} />
+                  </motion.div>
+                )}
+
+                {/* About Me Section integrated directly into Home overview */}
+                <div className="pt-8 border-t border-[#381B19]/60">
+                  <About />
+                </div>
               </motion.div>
             )}
 
