@@ -79,7 +79,8 @@ export const DICTIONARY = {
     // Graphic Design View
     graphic_view_title: 'Graphic Design',
     graphic_filter_category: 'Filter by Category',
-    graphic_categories_available: '3 Categories Available',
+    graphic_categories_available: '4 Categories Available',
+    cat_all: 'All',
     cat_social_media: 'Social media ads',
     cat_logo: 'Logo',
     cat_print: 'Print works',
@@ -266,7 +267,8 @@ export const DICTIONARY = {
     // Graphic Design View
     graphic_view_title: 'Design Graphique',
     graphic_filter_category: 'Filtrer par Catégorie',
-    graphic_categories_available: '3 Catégories Disponibles',
+    graphic_categories_available: '4 Catégories Disponibles',
+    cat_all: 'Tous',
     cat_social_media: 'Publicités réseaux sociaux',
     cat_logo: 'Logo & Identité',
     cat_print: 'Travaux d’impression',
@@ -453,7 +455,8 @@ export const DICTIONARY = {
     // Graphic Design View
     graphic_view_title: 'التصميم الجرافيكي',
     graphic_filter_category: 'تصفية حسب التصنيف',
-    graphic_categories_available: '3 تصنيفات متاحة',
+    graphic_categories_available: '4 تصنيفات متاحة',
+    cat_all: 'الكل',
     cat_social_media: 'إعلانات التواصل الاجتماعي',
     cat_logo: 'الشعارات والهوية البصرية',
     cat_print: 'المطبوعات والمواد الدعائية',
