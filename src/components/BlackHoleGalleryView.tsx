@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Maximize2, X, ChevronLeft, ChevronRight, Play, Pause, LayoutGrid, SlidersHorizontal, Shirt } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface BlackHoleGalleryViewProps {
   onBack: () => void;
@@ -17,52 +18,52 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
 
   const BLACK_HOLE_IMAGES = [
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg',
       title: language === 'ar' ? 'نموذج سترة Varsity الفاخرة' : language === 'fr' ? 'Mockup Veste Varsity' : 'Varsity Jacket Apparel Mockup',
       description: language === 'ar' ? 'تصميم وتطريز أزياء الشارع الراقية لسترة Varsity' : language === 'fr' ? 'Veste streetwear personnalisée avec broderie et sérigraphie' : 'Custom embroidered and printed varsity jacket street aesthetic'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/KJIJIJIJI.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/KJIJIJIJI.png',
       title: language === 'ar' ? 'الرسم المفاهيمي لـ Black Hole' : language === 'fr' ? 'Graphisme Conceptuel Black Hole' : 'Black Hole Concept Graphic',
       description: language === 'ar' ? 'عمل فني ورسومات رقمية مميزة للهوية البصرية' : language === 'fr' ? 'Création artistique signature et élément d’identité' : 'Signature graphic art and visual identity element'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022149.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022149.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 01' : language === 'fr' ? 'Mise en Page d’Impression 01' : 'Print Design Layout 01',
       description: language === 'ar' ? 'طباعة وتوزيع النصوص الفنية على الملابس' : language === 'fr' ? 'Typographie détaillée et placement sur vêtement' : 'Detailed typography and apparel placement artwork'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022210.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022210.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 02' : language === 'fr' ? 'Mise en Page d’Impression 02' : 'Print Design Layout 02',
       description: language === 'ar' ? 'العناصر الجرافيكية ومواصفات الطباعة على القماش' : language === 'fr' ? 'Éléments graphiques et spécifications textiles' : 'Graphic elements and apparel print specification'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022237.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022237.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 03' : language === 'fr' ? 'Mise en Page d’Impression 03' : 'Print Design Layout 03',
       description: language === 'ar' ? 'تفاصيل الرسومات والتركيب البصري للملابس' : language === 'fr' ? 'Détails des graphismes et composition textile' : 'Detailed apparel graphics & composition'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022302.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022302.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 04' : language === 'fr' ? 'Mise en Page d’Impression 04' : 'Print Design Layout 04',
       description: language === 'ar' ? 'فصل الألوان للطباعة الحريرية Screen Printing' : language === 'fr' ? 'Séparation des couleurs pour sérigraphie' : 'Screen print color separation and design sheet'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022320.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022320.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 05' : language === 'fr' ? 'Mise en Page d’Impression 05' : 'Print Design Layout 05',
       description: language === 'ar' ? 'تكوين فني بصري عالي التأثير لثقافة أزياء الشارع' : language === 'fr' ? 'Composition visuelle streetwear à fort impact' : 'High-impact streetwear visual composition'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022334.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022334.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 06' : language === 'fr' ? 'Mise en Page d’Impression 06' : 'Print Design Layout 06',
       description: language === 'ar' ? 'تفاصيل رسومات الإنتاج والطباعة' : language === 'fr' ? 'Graphismes de production et vue détaillée' : 'Print production graphics and detail view'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022348.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022348.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 07' : language === 'fr' ? 'Mise en Page d’Impression 07' : 'Print Design Layout 07',
       description: language === 'ar' ? 'تفاصيل الطباعة والأسلوب الفني' : language === 'fr' ? 'Détails d’impression et stylisme' : 'Graphic print detail and styling'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Screenshot%202025-01-23%20022406.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Screenshot%202025-01-23%20022406.png',
       title: language === 'ar' ? 'مخطط وتنسيق الطباعة 08' : language === 'fr' ? 'Mise en Page d’Impression 08' : 'Print Design Layout 08',
       description: language === 'ar' ? 'نظرة عامة على تنسيق وهوية العلامة' : language === 'fr' ? 'Aperçu global et charte de marque' : 'Apparel print layout overview & branding'
     }
@@ -131,27 +132,10 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
 
   return (
     <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh] space-y-8">
-      {/* Navigation and Header */}
+      {/* Header and View Mode Controls */}
       <div className="space-y-4">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
-          <span>{t('gallery_back')}</span>
-        </button>
-
         <div className="pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#381B19] pb-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase flex items-center gap-1.5">
-                <Shirt className="w-3.5 h-3.5" />
-                {t('cat_print')}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 text-xs font-mono border border-[#381B19]">
-                {BLACK_HOLE_IMAGES.length} Assets
-              </span>
-            </div>
             <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0] tracking-tight">
               BLACK HOLE APPAREL
             </h1>
@@ -207,6 +191,9 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
                     src={BLACK_HOLE_IMAGES[currentIndex].url}
                     alt={BLACK_HOLE_IMAGES[currentIndex].title}
                     referrerPolicy="no-referrer"
+                    onError={onImageError}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain select-none rounded-xl"
                   />
                 </motion.div>
@@ -282,6 +269,9 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover bg-[#1B0C0B]"
                 />
               </button>
@@ -308,6 +298,9 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
                 />
                 <div className="absolute top-2 right-2 p-1.5 rounded-full bg-[#1B0C0B]/80 text-[#D68379] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -358,6 +351,9 @@ export const BlackHoleGalleryView: React.FC<BlackHoleGalleryViewProps> = ({ onBa
                 src={BLACK_HOLE_IMAGES[currentIndex].url}
                 alt={BLACK_HOLE_IMAGES[currentIndex].title}
                 referrerPolicy="no-referrer"
+                onError={onImageError}
+                loading="lazy"
+                decoding="async"
                 className="max-w-full max-h-[75vh] object-contain rounded-xl select-none"
               />
 

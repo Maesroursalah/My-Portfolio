@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Maximize2, X, ChevronLeft, ChevronRight, Play, Pause, LayoutGrid, SlidersHorizontal } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface BeliveGalleryViewProps {
   onBack: () => void;
@@ -17,17 +18,17 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
 
   const BELIVE_IMAGES = [
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png',
       title: language === 'ar' ? 'شعار وهوية العلامة التجارية' : language === 'fr' ? 'Logo & Identité de Marque' : 'Brand Identity Logo',
       description: language === 'ar' ? 'تصميم شعار عصري وأنيق وبسيط لعلامة تجارية متخصصة في مستحضرات التجميل' : language === 'fr' ? 'Logo épuré et minimaliste pour marque de beauté' : 'Modern, elegant and minimalist beauty brand logo mark'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/beliver/Add_logo_and_QR_code_202608151741.jpeg',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/beliver/Add_logo_and_QR_code_202608151741.jpeg',
       title: language === 'ar' ? 'تغليف المنتجات مع رمز الاستجابة السريعة QR' : language === 'fr' ? 'Packaging & Intégration QR Code' : 'Packaging & QR Code Brand Showcase',
       description: language === 'ar' ? 'عرض التغليف الفاخر للمستحضرات التجميلية مع دمج الهوية ورمز QR' : language === 'fr' ? 'Présentation de packaging cosmétique avec QR code' : 'Cosmetic packaging presentation with QR code and identity integration'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/beliver/Modify_logo_packaging_mockup_2K_202608151659.jpeg',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/beliver/Modify_logo_packaging_mockup_2K_202608151659.jpeg',
       title: language === 'ar' ? 'نموذج تغليف ثلاثي الأبعاد فائق الدقة 2K' : language === 'fr' ? 'Mockup de Packaging Produit 2K' : '2K Product Packaging Mockup',
       description: language === 'ar' ? 'عرض المنتج بدقة عالية وتصميم عبوات فاخرة ومتميزة' : language === 'fr' ? 'Rendu haute résolution et packaging de luxe' : 'High resolution product presentation & luxury packaging design'
     }
@@ -96,26 +97,10 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
 
   return (
     <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh] space-y-8">
-      {/* Navigation and Header */}
+      {/* Header and View Mode Controls */}
       <div className="space-y-4">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
-          <span>{t('gallery_back')}</span>
-        </button>
-
         <div className="pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#381B19] pb-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase">
-                {t('cat_logo')}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 text-xs font-mono border border-[#381B19]">
-                {BELIVE_IMAGES.length} Assets
-              </span>
-            </div>
             <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0] tracking-tight">
               BELIVE
             </h1>
@@ -171,6 +156,9 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
                     src={BELIVE_IMAGES[currentIndex].url}
                     alt={BELIVE_IMAGES[currentIndex].title}
                     referrerPolicy="no-referrer"
+                    onError={onImageError}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain select-none rounded-xl"
                   />
                 </motion.div>
@@ -246,6 +234,9 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain bg-[#1B0C0B]"
                 />
               </button>
@@ -272,6 +263,9 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-2 right-2 p-1.5 rounded-full bg-[#1B0C0B]/80 text-[#D68379] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -322,6 +316,8 @@ export const BeliveGalleryView: React.FC<BeliveGalleryViewProps> = ({ onBack }) 
                 src={BELIVE_IMAGES[currentIndex].url}
                 alt={BELIVE_IMAGES[currentIndex].title}
                 referrerPolicy="no-referrer"
+                onError={onImageError}
+                decoding="async"
                 className="max-w-full max-h-[75vh] object-contain rounded-xl select-none"
               />
 

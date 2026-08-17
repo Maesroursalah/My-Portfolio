@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # No `cache: npm` on purpose: this repository has no package-lock.json (PART 0.5).
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build the web bundle
+        run: npm run build:web
+
+      - name: Disable Jekyll processing
+        run: touch dist/.nojekyll
+
+      - name: Verify the base path was applied
+        run: |
+          test -f dist/index.html
+          grep -q '/My-Portfolio/assets/' dist/index.html
+          ! grep -q 'src="/src/main.tsx"' dist/index.html
+          echo "base path OK"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

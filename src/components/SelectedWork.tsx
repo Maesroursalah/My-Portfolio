@@ -4,6 +4,7 @@ import { CASE_STUDIES } from '../data/portfolioData';
 import { CaseStudy } from '../types';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface SelectedWorkProps {
   onSelectCaseStudy: (caseStudy: CaseStudy) => void;
@@ -48,6 +49,10 @@ export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectCaseStudy })
               <img
                 src={project.thumbnail}
                 alt={project.title}
+                referrerPolicy="no-referrer"
+                onError={onImageError}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
               />
 

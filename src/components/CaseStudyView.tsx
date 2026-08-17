@@ -15,47 +15,30 @@ export const CaseStudyView: React.FC<CaseStudyViewProps> = ({ caseStudy, onBack 
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 z-10 relative">
-      {/* Top Back Navigation & Metadata Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#572A26] pb-6">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md"
-          data-cursor="BACK"
-        >
-          <ArrowLeft className="w-4 h-4 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Projects Overview</span>
-        </button>
+      {/* Top Action Bar if Live URL exists */}
+      {caseStudy.liveUrl && (
+        <div className="flex items-center justify-end border-b border-[#572A26] pb-4">
+          <a
+            href={caseStudy.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative group overflow-hidden px-5 py-2.5 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-xs flex items-center gap-2.5 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-lg"
+            data-cursor="VISIT"
+          >
+            {/* Live Radar Ping Dot */}
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-90"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+            </span>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {caseStudy.liveUrl && (
-            <a
-              href={caseStudy.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group overflow-hidden px-5 py-2 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-xs flex items-center gap-2.5 transition-all duration-300 animate-pulse-glow hover:scale-105 active:scale-95 shadow-lg"
-              data-cursor="VISIT"
-            >
-              {/* Live Radar Ping Dot */}
-              <span className="relative flex h-2.5 w-2.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-90"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
-              </span>
+            {/* Shimmer overlay sweep */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-shimmer" />
 
-              {/* Shimmer overlay sweep */}
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-shimmer" />
-
-              <span className="relative z-10 tracking-wide">View Live Prototype</span>
-              <ExternalLink className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-            </a>
-          )}
-          <span className="text-xs font-display px-3.5 py-1.5 rounded-full bg-[#381B19] text-[#D68379] font-bold border border-[#572A26]">
-            {caseStudy.category}
-          </span>
-          <span className="text-xs font-mono px-3 py-1.5 rounded-full bg-[#150B0A] text-rose-300 border border-[#381B19]">
-            {caseStudy.year}
-          </span>
+            <span className="relative z-10 tracking-wide">View Live Prototype</span>
+            <ExternalLink className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+          </a>
         </div>
-      </div>
+      )}
 
       {/* Hero Header & Title */}
       <motion.div

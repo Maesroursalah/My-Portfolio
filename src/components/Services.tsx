@@ -134,10 +134,6 @@ export const Services: React.FC = () => {
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#572A26] pb-8">
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs font-display text-[#D68379] font-bold tracking-widest uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{t('services_kicker')}</span>
-          </div>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#fff8f0]">
             {t('services_title')}
           </h2>

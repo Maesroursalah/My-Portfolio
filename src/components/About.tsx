@@ -13,8 +13,7 @@ import {
   Compass,
   FileCode2,
   Wrench,
-  Lightbulb,
-  Sparkles
+  Lightbulb
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { useLanguage } from './LanguageContext';
@@ -337,10 +336,6 @@ export const About: React.FC = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#D68379]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-3xl space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26]">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>COLLABORATION & INQUIRIES</span>
-          </div>
           <h3 className="text-3xl sm:text-5xl font-serif font-bold text-[#fff8f0] tracking-tight">
             🚀 {t('contact_title')}
           </h3>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Layers, Video, Palette, Printer, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Layers, Video, Palette, Printer, LayoutGrid, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface GraphicDesignViewProps {
   onNavigateHome?: () => void;
@@ -13,6 +14,7 @@ type CategoryType = 'all' | 'social-media-ads' | 'logo' | 'print-works';
 export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigateHome, onSelectProject }) => {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const categories: { id: CategoryType; label: string; count: number; icon: React.FC<{ className?: string }> }[] = [
     { id: 'all', label: t('cat_all'), count: 4, icon: LayoutGrid },
@@ -21,20 +23,13 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
     { id: 'print-works', label: t('cat_print'), count: 1, icon: Printer },
   ];
 
+  const currentCategoryObj = categories.find((c) => c.id === selectedCategory) || categories[0];
+  const CurrentIcon = currentCategoryObj.icon;
+
   return (
     <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[70vh] space-y-10">
       {/* Header Banner */}
       <div className="space-y-4 text-center md:text-left">
-        {onNavigateHome && (
-          <button
-            onClick={onNavigateHome}
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2 cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-            <span>{t('nav_back_home')}</span>
-          </button>
-        )}
-
         <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0]">
           {t('graphic_view_title')}
         </h1>
@@ -52,8 +47,82 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
           </span>
         </div>
 
-        {/* Redesigned Category Selector Container */}
-        <div className="relative inline-flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-gradient-to-b from-[#220E0D] to-[#160807] border border-[#522521] shadow-2xl backdrop-blur-xl">
+        {/* MOBILE VERSION: Collapsible selector until user opens and selects */}
+        <div className="sm:hidden w-full space-y-2">
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="w-full px-4 py-3 rounded-2xl bg-gradient-to-b from-[#220E0D] to-[#160807] border border-[#522521] shadow-xl flex items-center justify-between text-left transition-all active:scale-[0.99] cursor-pointer"
+            aria-expanded={isMobileMenuOpen}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-[#3D1D1A] text-[#D68379] border border-[#572A26]">
+                <CurrentIcon className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono text-rose-300/60 uppercase block">
+                  {t('graphic_filter_category')}
+                </span>
+                <span className="text-sm font-serif font-bold text-[#fff8f0]">
+                  {currentCategoryObj.label}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#D68379] text-[#1B0C0B]">
+                {currentCategoryObj.count}
+              </span>
+              <ChevronDown className={`w-4 h-4 text-rose-300 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180 text-[#D68379]' : ''}`} />
+            </div>
+          </button>
+
+          {/* Collapsible Mobile Options Drawer */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, y: -8 }}
+                animate={{ opacity: 1, height: 'auto', y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: 'easeInOut' }}
+                className="overflow-hidden rounded-2xl bg-[#1B0C0B] border border-[#522521] shadow-2xl p-2 space-y-1.5 backdrop-blur-xl"
+              >
+                {categories.map((cat) => {
+                  const isActive = selectedCategory === cat.id;
+                  const Icon = cat.icon;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedCategory(cat.id);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-left flex items-center justify-between transition-colors cursor-pointer ${
+                        isActive
+                          ? 'bg-[#3D1D1A] text-[#fff8f0] border border-[#D68379]/60 shadow-sm'
+                          : 'text-rose-200/70 hover:bg-[#2C1311] hover:text-[#fff8f0]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-[#D68379]' : 'text-rose-300/50'}`} />
+                        <span className="text-xs font-display font-bold uppercase tracking-wider">{cat.label}</span>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                        isActive ? 'bg-[#D68379] text-[#1B0C0B]' : 'bg-[#2A1211] text-rose-300/70'
+                      }`}>
+                        {cat.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* DESKTOP/TABLET VERSION: Always visible inline pills */}
+        <div className="hidden sm:inline-flex relative flex-wrap items-center gap-2 p-2 rounded-2xl bg-gradient-to-b from-[#220E0D] to-[#160807] border border-[#522521] shadow-2xl backdrop-blur-xl">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             const Icon = cat.icon;
@@ -138,9 +207,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                 >
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/FIRST.png"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/FIRST.png"
                       alt="OZONEXPRESS Campaign"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-[#150B0A]/30 to-transparent" />
@@ -189,7 +261,7 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                 >
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-2">
                     <video
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/momento.webm"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/momento%20ads/momento.webm"
                       muted
                       loop
                       playsInline
@@ -243,9 +315,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                 >
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-3">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png"
                       alt="BELIVE Brand Identity & Logo"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
@@ -294,9 +369,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                 >
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-2">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg"
                       alt="Black hole designs - Varsity Jacket & Streetwear Prints"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
@@ -371,9 +449,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   {/* Visual Thumbnail Frame */}
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/FIRST.png"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/FIRST.png"
                       alt="OZONEXPRESS Campaign"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-85 group-hover:opacity-100"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-[#150B0A]/30 to-transparent" />
@@ -420,7 +501,7 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   {/* Visual Thumbnail Frame */}
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-2">
                     <video
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/momento.webm"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/momento%20ads/momento.webm"
                       muted
                       loop
                       playsInline
@@ -496,9 +577,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   {/* Visual Thumbnail Frame */}
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-3">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/beliver/Beige%20Et%20Vert%20Elegant%20Moderne%20Et%20Simple%20Marque%20Beaut%C3%A9%20%20Logo%20-%201.png"
                       alt="BELIVE Brand Identity & Logo"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
@@ -569,9 +653,12 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   {/* Visual Thumbnail Frame */}
                   <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#251110] border border-[#381B19] flex items-center justify-center p-2">
                     <img
-                      src="https://raw.githubusercontent.com/Maesroursalah/portfolio/main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg"
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/black%20hole/Golden%20Bear%20Raglan%20Wool%20Varsity%20Jackets%20(1)%20copy.jpg"
                       alt="Black hole designs - Varsity Jacket & Streetwear Prints"
                       referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />

@@ -20,17 +20,17 @@ export const MomentoAdsGalleryView: React.FC<MomentoAdsGalleryViewProps> = ({ on
 
   const MOMENTO_ADS_VIDEOS = [
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/momento.webm',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/momento%20ads/momento.webm',
       title: language === 'ar' ? 'إعلان فيديو مميز لعلامة Momento' : language === 'fr' ? 'Spot Vidéo de Marque Momento' : 'Momento Brand Video Ad',
       description: language === 'ar' ? 'إعلان حركي ديناميكي يعكس هوية العلامة التجارية بدقة وجاذبية' : language === 'fr' ? 'Publicité vidéo dynamique mettant en valeur l’identité de marque' : 'Dynamic motion ad showcasing signature brand identity'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/270%20dhs.webm',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/momento%20ads/270%20dhs.webm',
       title: language === 'ar' ? 'إعلان العرض الترويجي (270 درهم)' : language === 'fr' ? 'Offre Promotionnelle (270 DHS)' : 'Promotional Offer Ad (270 DHS)',
       description: language === 'ar' ? 'إعلان فيديو ترويجي عالي التحويل لمنصات التجارة الإلكترونية' : language === 'fr' ? 'Vidéo promotionnelle e-commerce à fort impact de conversion' : 'High-impact e-commerce promotional video ad'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/momento%20ads/%2B4.webm',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/momento%20ads/%2B4.webm',
       title: language === 'ar' ? 'إعلان ميزات وقيمة المنتج' : language === 'fr' ? 'Spot Fonctionnalités & Valeur Produit' : 'Product Feature & Value Video Ad',
       description: language === 'ar' ? 'محتوى فيديو تفاعلي محسن لحملات التواصل الاجتماعي وزيادة المبيعات' : language === 'fr' ? 'Création vidéo engageante optimisée pour les flux sociaux' : 'Engaging motion creative optimized for social feed conversions'
     }
@@ -109,27 +109,10 @@ export const MomentoAdsGalleryView: React.FC<MomentoAdsGalleryViewProps> = ({ on
 
   return (
     <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh] space-y-8">
-      {/* Navigation and Header */}
+      {/* Header and View Mode Controls */}
       <div className="space-y-4">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
-          <span>{t('gallery_back')}</span>
-        </button>
-
         <div className="pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#381B19] pb-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase flex items-center gap-1.5">
-                <Video className="w-3 h-3" />
-                {t('cat_ads')}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 text-xs font-mono border border-[#381B19]">
-                {MOMENTO_ADS_VIDEOS.length} Video Ads
-              </span>
-            </div>
             <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0] tracking-tight">
               MOMENTO ADS
             </h1>

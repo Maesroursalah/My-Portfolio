@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { CASE_STUDIES } from '../data/portfolioData';
 import { CaseStudy } from '../types';
-import { ArrowUpRight, ArrowLeft } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 
 interface WorkViewProps {
@@ -10,7 +10,7 @@ interface WorkViewProps {
   onNavigateHome?: () => void;
 }
 
-export const WorkView: React.FC<WorkViewProps> = ({ onSelectCaseStudy, onNavigateHome }) => {
+export const WorkView: React.FC<WorkViewProps> = ({ onSelectCaseStudy }) => {
   const { t } = useLanguage();
   const [subFilter, setSubFilter] = useState<string>('All');
 
@@ -39,16 +39,6 @@ export const WorkView: React.FC<WorkViewProps> = ({ onSelectCaseStudy, onNavigat
     <div className="space-y-12 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header Banner */}
       <div className="space-y-4 text-center md:text-left">
-        {onNavigateHome && (
-          <button
-            onClick={onNavigateHome}
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2 cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-            <span>{t('nav_back_home')}</span>
-          </button>
-        )}
-
         <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0]">
           {t('dev_view_title')}
         </h1>

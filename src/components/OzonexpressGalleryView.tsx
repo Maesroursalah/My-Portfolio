@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Maximize2, X, ChevronLeft, ChevronRight, Play, Pause, LayoutGrid, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface OzonexpressGalleryViewProps {
   onBack: () => void;
@@ -17,32 +18,32 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
 
   const OZONEXPRESS_IMAGES = [
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/FIRST.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/FIRST.png',
       title: language === 'ar' ? 'الحملة الإعلانية البصرية 01' : language === 'fr' ? 'Campagne Visuelle 01' : 'Visual Campaign 01',
       description: language === 'ar' ? 'تصميم إعلاني ترويجي رئيسي عالي التأثير' : language === 'fr' ? 'Campagne publicitaire visuelle promotionnelle' : 'Hero promotional visual advertising campaign'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/GI.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/GI.png',
       title: language === 'ar' ? 'الحملة الإعلانية البصرية 02' : language === 'fr' ? 'Campagne Visuelle 02' : 'Visual Campaign 02',
       description: language === 'ar' ? 'تصميم جرافيكي يبرز هوية وترويج العلامة' : language === 'fr' ? 'Graphisme d’identité de marque et promotion' : 'Brand identity & promotion graphic'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/OI.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/OI.png',
       title: language === 'ar' ? 'الحملة الإعلانية البصرية 03' : language === 'fr' ? 'Campagne Visuelle 03' : 'Visual Campaign 03',
       description: language === 'ar' ? 'إبراز مزايا وخصائص المنتجات بأسلوب إبداعي' : language === 'fr' ? 'Création visuelle mettant en valeur les fonctionnalités' : 'Product feature highlight creative'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/POST.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/POST.png',
       title: language === 'ar' ? 'منشورات شبكات التواصل الاجتماعي' : language === 'fr' ? 'Publication Réseaux Sociaux' : 'Social Media Post',
       description: language === 'ar' ? 'تصاميم منشورات متناسقة وجاذبة لزيادة التفاعل' : language === 'fr' ? 'Design de publication engageant pour flux social' : 'Engaging feed post design'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/TETOUANE.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/TETOUANE.png',
       title: language === 'ar' ? 'إعلان ترويجي لمدينة تطوان' : language === 'fr' ? 'Annonce Promotionnelle Tétouan' : 'Tetouan Promotion Ad',
       description: language === 'ar' ? 'عروض خاصة وإعلانات موجهة للمناطق الجغرافية' : language === 'fr' ? 'Offres spéciales et publication régionale' : 'Special offers & regional social post'
     },
     {
-      url: 'https://raw.githubusercontent.com/Maesroursalah/portfolio/main/ozonexpress01/Untitled-16.png',
+      url: 'https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/ozonexpress01/Untitled-16.png',
       title: language === 'ar' ? 'إعلان إبداعي لهوية العلامة' : language === 'fr' ? 'Bannière Créative de Marque' : 'Brand Creative Ad',
       description: language === 'ar' ? 'بانر إعلاني عالي التحويل لمنصات التسويق' : language === 'fr' ? 'Bannière promotionnelle à fort taux de conversion' : 'High-conversion promotional banner'
     }
@@ -111,27 +112,10 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
 
   return (
     <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh] space-y-8">
-      {/* Navigation and Header */}
+      {/* Header and View Mode Controls */}
       <div className="space-y-4">
-        <button
-          onClick={onBack}
-          className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
-          <span>{t('gallery_back')}</span>
-        </button>
-
         <div className="pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#381B19] pb-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#381B19] text-[#D68379] text-xs font-mono font-bold border border-[#572A26] uppercase flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3" />
-                {t('cat_social')}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 text-xs font-mono border border-[#381B19]">
-                {OZONEXPRESS_IMAGES.length} Assets
-              </span>
-            </div>
             <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0] tracking-tight">
               OZONEXPRESS
             </h1>
@@ -187,6 +171,9 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
                     src={OZONEXPRESS_IMAGES[currentIndex].url}
                     alt={OZONEXPRESS_IMAGES[currentIndex].title}
                     referrerPolicy="no-referrer"
+                    onError={onImageError}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain select-none rounded-xl"
                   />
                 </motion.div>
@@ -262,6 +249,9 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover bg-[#1B0C0B]"
                 />
               </button>
@@ -288,6 +278,9 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
                   src={img.url}
                   alt={img.title}
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-lg"
                 />
                 <div className="absolute top-2 right-2 p-1.5 rounded-full bg-[#1B0C0B]/80 text-[#D68379] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -338,6 +331,8 @@ export const OzonexpressGalleryView: React.FC<OzonexpressGalleryViewProps> = ({ 
                 src={OZONEXPRESS_IMAGES[currentIndex].url}
                 alt={OZONEXPRESS_IMAGES[currentIndex].title}
                 referrerPolicy="no-referrer"
+                onError={onImageError}
+                decoding="async"
                 className="max-w-full max-h-[75vh] object-contain rounded-xl select-none"
               />
 

@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { FolderGit2, ArrowRight, Palette, Code } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { useLanguage } from './LanguageContext';
+import { onImageError } from '../lib/imgFallback';
 
 interface HeroProps {
   onNavigate?: (page: string) => void;
@@ -36,6 +37,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               src={PERSONAL_INFO.avatar}
               alt="Mesrour Salah Eddine"
               referrerPolicy="no-referrer"
+              onError={onImageError}
+              decoding="async"
               className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A] via-transparent to-transparent opacity-90" />
@@ -72,22 +75,12 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         >
           <button
             onClick={() => handleNav('work')}
-            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30 cursor-pointer"
-            data-cursor="DEVELOPMENT"
+            className="group w-full sm:w-auto px-8 sm:px-10 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30 cursor-pointer"
+            data-cursor="MY WORKS"
           >
-            <Code className="w-4 h-4 shrink-0" />
+            <FolderGit2 className="w-4 h-4 shrink-0" />
             <span className="whitespace-nowrap">{t('hero_view_works')}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
-          </button>
-
-          <button
-            onClick={() => handleNav('graphic-design')}
-            className="group w-full sm:w-auto px-6 sm:px-8 py-4 rounded-full bg-[#251110] border-2 border-[#572A26] hover:border-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:bg-[#381B19] transition-all shadow-xl shadow-black/60 cursor-pointer"
-            data-cursor="GRAPHIC DESIGN"
-          >
-            <Palette className="w-4 h-4 text-[#D68379] shrink-0" />
-            <span className="whitespace-nowrap">{t('hero_graphic_design')}</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[#D68379] shrink-0" />
           </button>
         </motion.div>
       </div>

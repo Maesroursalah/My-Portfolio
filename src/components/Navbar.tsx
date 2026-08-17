@@ -27,6 +27,7 @@ import {
   Check
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { onImageError } from '../lib/imgFallback';
 
 interface NavbarProps {
   activePage: string;
@@ -102,11 +103,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
   const navLinks = [
     { name: t('nav_home'), id: 'home', icon: Home, num: '01' },
     { name: t('nav_work'), id: 'work', icon: Code, num: '02' },
-    { name: t('nav_graphic'), id: 'graphic-design', icon: Palette, num: '03' },
-    { name: t('nav_services'), id: 'services', icon: Sparkles, num: '04' },
-    { name: t('nav_skills'), id: 'skills', icon: Layers, num: '05' },
-    { name: t('nav_process'), id: 'process', icon: Compass, num: '06' },
-    { name: t('nav_about'), id: 'about', icon: User, num: '07' },
+    { name: t('nav_services'), id: 'services', icon: Sparkles, num: '03' },
+    { name: t('nav_skills'), id: 'skills', icon: Layers, num: '04' },
+    { name: t('nav_process'), id: 'process', icon: Compass, num: '05' },
+    { name: t('nav_about'), id: 'about', icon: User, num: '06' },
   ];
 
   const handleNavClick = (pageId: string) => {
@@ -160,6 +160,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                   src={PERSONAL_INFO.logo}
                   alt="Mesrour Salah Eddine Logo"
                   referrerPolicy="no-referrer"
+                  onError={onImageError}
+                  decoding="async"
                   className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -320,6 +322,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                 src={PERSONAL_INFO.avatar}
                 alt={PERSONAL_INFO.name}
                 referrerPolicy="no-referrer"
+                onError={onImageError}
+                decoding="async"
                 className="w-full h-full object-cover object-top brightness-90 contrast-105 pointer-events-none"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#120706] via-[#120706]/40 to-black/60 pointer-events-none" />

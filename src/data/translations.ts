@@ -25,7 +25,7 @@ export const DICTIONARY = {
   en: {
     // Navigation & Global
     nav_home: 'Home',
-    nav_work: 'Web Development',
+    nav_work: 'My Works',
     nav_graphic: 'Graphic Design',
     nav_services: 'Capabilities',
     nav_skills: 'Skills & Stack',
@@ -36,6 +36,7 @@ export const DICTIONARY = {
     nav_close: 'Close',
     nav_back: 'Back',
     nav_back_home: 'Back to Home Overview',
+    nav_back_works: 'Back to My Works Hub',
     nav_back_portfolio: 'Back to Portfolio',
     nav_language: 'Language',
     language_select: 'Select Language',
@@ -44,6 +45,21 @@ export const DICTIONARY = {
     time_morocco: 'Casablanca GMT+1',
     all_rights: 'All rights reserved.',
     back_to_top: 'Back to Top',
+
+    // My Works Dual Page & Selection Hub
+    my_works_title: 'My Works',
+    my_works_subtitle: 'A complete showcase featuring Full-Stack Web Development & Commercial Graphic Design.',
+    works_select_category_badge: 'PORTFOLIO DIRECTORY // CHOOSE DISCIPLINE',
+    works_select_title: 'Select a Discipline to Explore',
+    works_select_subtitle: 'Choose between Commercial Graphic Design & Vector Branding, or Full-Stack Web Applications & Architecture.',
+    works_choice_graphic_title: 'GRAPHIC DESIGN',
+    works_choice_graphic_tag: 'Brand Identity • Social Ads • Motion • Print',
+    works_choice_graphic_desc: 'High-converting social media creatives, vector brand identities, logo design, packaging concepts, and commercial print assets.',
+    works_choice_graphic_btn: 'EXPLORE',
+    works_choice_web_title: 'WEB DEVELOPMENT',
+    works_choice_web_tag: 'React • Next.js • Headless E-Commerce • SaaS',
+    works_choice_web_desc: 'Modern web applications, high-performance headless e-commerce storefronts, SaaS dashboards, and full-stack engineering.',
+    works_choice_web_btn: 'EXPLORE',
 
     // Hero
     hero_badge: 'FULL-STACK DEVELOPER & BRAND DESIGNER',
@@ -213,7 +229,7 @@ export const DICTIONARY = {
   fr: {
     // Navigation & Global
     nav_home: 'Accueil',
-    nav_work: 'Développement Web',
+    nav_work: 'Mes Travaux',
     nav_graphic: 'Design Graphique',
     nav_services: 'Compétences',
     nav_skills: 'Compétences & Stack',
@@ -224,6 +240,7 @@ export const DICTIONARY = {
     nav_close: 'Fermer',
     nav_back: 'Retour',
     nav_back_home: 'Retour à l’Accueil',
+    nav_back_works: 'Retour au Répertoire des Travaux',
     nav_back_portfolio: 'Retour au Portfolio',
     nav_language: 'Langue',
     language_select: 'Choisir la Langue',
@@ -232,6 +249,21 @@ export const DICTIONARY = {
     time_morocco: 'Casablanca GMT+1',
     all_rights: 'Tous droits réservés.',
     back_to_top: 'Haut de page',
+
+    // My Works Dual Page & Selection Hub
+    my_works_title: 'Mes Travaux',
+    my_works_subtitle: 'Une vitrine complète combinant mes deux disciplines : le Développement Web Full-Stack & le Design Graphique de Marque.',
+    works_select_category_badge: 'RÉPERTOIRE DU PORTFOLIO // CHOIX DU DOMAINE',
+    works_select_title: 'Choisissez une discipline à explorer',
+    works_select_subtitle: 'Choisissez entre le Design Graphique & Branding de Marque, ou le Développement Web & Applications Full-Stack.',
+    works_choice_graphic_title: 'DESIGN GRAPHIQUE',
+    works_choice_graphic_tag: 'Identité de Marque • Publicités • Motion • Print',
+    works_choice_graphic_desc: 'Campagnes publicitaires pour réseaux sociaux à fort impact, identités visuelles, logos vectoriels, packaging et créations imprimées.',
+    works_choice_graphic_btn: 'EXPLORER',
+    works_choice_web_title: 'DÉVELOPPEMENT WEB',
+    works_choice_web_tag: 'React • Next.js • E-Commerce Headless • SaaS',
+    works_choice_web_desc: 'Applications web modernes, boutiques e-commerce haute performance, tableaux de bord SaaS et architecture logicielle.',
+    works_choice_web_btn: 'EXPLORER',
 
     // Hero
     hero_badge: 'DÉVELOPPEUR FULL-STACK & DESIGNER DE MARQUE',
@@ -401,7 +433,7 @@ export const DICTIONARY = {
   ar: {
     // Navigation & Global
     nav_home: 'الرئيسية',
-    nav_work: 'تطوير الويب',
+    nav_work: 'أعمالي',
     nav_graphic: 'التصميم الجرافيكي',
     nav_services: 'الخدمات والقدرات',
     nav_skills: 'المهارات والتقنيات',
@@ -412,6 +444,7 @@ export const DICTIONARY = {
     nav_close: 'إغلاق',
     nav_back: 'رجوع',
     nav_back_home: 'العودة للصفحة الرئيسية',
+    nav_back_works: 'العودة لدليل الأعمال والمشاريع',
     nav_back_portfolio: 'العودة لمعرض الأعمال',
     nav_language: 'اللغة',
     language_select: 'اختر اللغة',
@@ -420,6 +453,21 @@ export const DICTIONARY = {
     time_morocco: 'الدار البيضاء GMT+1',
     all_rights: 'جميع الحقوق محفوظة.',
     back_to_top: 'العودة للأعلى',
+
+    // My Works Dual Page & Selection Hub
+    my_works_title: 'أعمالي ومشاريعي',
+    my_works_subtitle: 'معرض شامل يجمع بين التخصصين: تطوير برمجيات ومواقع الويب، وتصاميم الجرافيك والهويات البصرية.',
+    works_select_category_badge: 'دليل الأعمال // اختر التخصص',
+    works_select_title: 'اختر المجال الذي ترغب في استعراضه',
+    works_select_subtitle: 'اختر بين التصميم الجرافيكي والهويات البصرية، أو تطوير مواقع وتطبيقات الويب البرمجية المتكاملة.',
+    works_choice_graphic_title: 'التصميم الجرافيكي',
+    works_choice_graphic_tag: 'هويات بصرية • إعلانات سوشيال ميديا • موشن • مطبوعات',
+    works_choice_graphic_desc: 'حملات إعلانية عالية التحويل لمنصات التواصل، هويات وشعارات فيكتور احترافية، تصاميم تغليف ومطبوعات تجارية.',
+    works_choice_graphic_btn: 'استكشاف',
+    works_choice_web_title: 'تطوير الويب والبرمجيات',
+    works_choice_web_tag: 'React • Next.js • متاجر إلكترونية • SaaS',
+    works_choice_web_desc: 'تطبيقات ويب متقدمة، متاجر إلكترونية سريعة، لوحات تحكم SaaS تفاعلية وأنظمة برمجية عالية الأداء.',
+    works_choice_web_btn: 'استكشاف',
 
     // Hero
     hero_badge: 'مطور ويب متكامل ومصمم هويات بصرية',

@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
 import { Preloader } from './components/Preloader';
+import { CodeTransitionOverlay } from './components/CodeTransitionOverlay';
 import { CanvasBackground } from './components/CanvasBackground';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Marquee } from './components/Marquee';
-import { SelectedWork } from './components/SelectedWork';
 import { WorkView } from './components/WorkView';
+import { MyWorksView } from './components/MyWorksView';
 import { GraphicDesignView } from './components/GraphicDesignView';
 import { OzonexpressGalleryView } from './components/OzonexpressGalleryView';
 import { BeliveGalleryView } from './components/BeliveGalleryView';
@@ -29,13 +30,15 @@ import { ArrowRight, ArrowLeft, Sparkles, FolderGit2, ShieldCheck, Briefcase, Fi
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [showSelectedWork, setShowSelectedWork] = useState(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionTarget, setTransitionTarget] = useState('home');
 
   // Router active page state synced with hash
   const [activePage, setActivePage] = useState<string>(() => {
     const hash = window.location.hash.replace('#/', '').replace('#', '');
-    return ['home', 'work', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'about', 'skills', 'process', 'case-study'].includes(hash)
+    if (hash === 'my-works') return 'work';
+    return ['home', 'work', 'my-works', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'about', 'skills', 'process', 'case-study'].includes(hash)
       ? hash
       : 'home';
   });
@@ -44,17 +47,32 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#/', '').replace('#', '');
+      let target = 'home';
       if (hash === 'about') {
         setActivePage('home');
         setTimeout(() => {
           const el = document.querySelector('#about');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
-      } else if (['home', 'work', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'skills', 'process', 'case-study'].includes(hash)) {
-        setActivePage(hash);
-      } else if (!hash) {
-        setActivePage('home');
+        return;
+      } else if (hash === 'my-works') {
+        target = 'work';
+      } else if (['home', 'work', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'skills', 'process', 'case-study'].includes(hash)) {
+        target = hash;
       }
+
+      setTransitionTarget(target);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActivePage(target);
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { immediate: true });
+        }
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }, 160);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 550);
     };
 
     // Check initial hash on mount
@@ -69,8 +87,10 @@ export default function App() {
   // Ref to Lenis instance for programmatic instant scrolling
   const lenisRef = React.useRef<Lenis | null>(null);
 
-  // Page change handler that resets scroll or scrolls to target section
+  // Page change handler that triggers the coding glitch transition
   const handlePageChange = (page: string) => {
+    if (page === activePage && page !== 'about') return;
+
     if (page === 'about') {
       setActivePage('home');
       window.location.hash = '#about';
@@ -83,12 +103,24 @@ export default function App() {
       return;
     }
 
-    setActivePage(page);
-    window.location.hash = page === 'home' ? '' : `#${page}`;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
-    }
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    // Trigger Coding / Cyberpunk Glitch Transition
+    setTransitionTarget(page);
+    setIsTransitioning(true);
+
+    // Switch page after brief initial matrix burst
+    setTimeout(() => {
+      setActivePage(page);
+      window.location.hash = page === 'home' ? '' : `#${page}`;
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }, 180);
+
+    // Hide transition overlay smoothly
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 550);
   };
 
   const handleSelectCaseStudy = (cs: CaseStudy) => {
@@ -130,6 +162,12 @@ export default function App() {
         {/* Preloader Counter */}
         {loading && <Preloader onComplete={() => setLoading(false)} />}
 
+        {/* Coding & Matrix Page Transition Overlay */}
+        <CodeTransitionOverlay
+          isTransitioning={isTransitioning}
+          targetPageName={transitionTarget}
+        />
+
         {/* Canvas Background Interactive Mesh */}
         <CanvasBackground />
 
@@ -149,38 +187,8 @@ export default function App() {
                 transition={{ duration: 0.3 }}
                 className="space-y-16"
               >
-                <Hero onNavigate={(page) => {
-                  if (page === 'work') {
-                    setShowSelectedWork(true);
-                    setTimeout(() => {
-                      const el = document.querySelector('#work');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  } else {
-                    handlePageChange(page);
-                  }
-                }} />
+                <Hero onNavigate={(page) => handlePageChange(page)} />
                 <Marquee />
-
-                {/* Selected Works section revealed on click */}
-                {showSelectedWork && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="space-y-4"
-                  >
-                    <div className="max-w-7xl mx-auto px-4 flex justify-end">
-                      <button
-                        onClick={() => setShowSelectedWork(false)}
-                        className="px-4 py-1.5 rounded-full bg-[#251110] hover:bg-[#381B19] border border-[#572A26] text-rose-300 text-xs font-mono transition-colors"
-                      >
-                        ✕ Hide Works Section
-                      </button>
-                    </div>
-                    <SelectedWork onSelectCaseStudy={handleSelectCaseStudy} />
-                  </motion.div>
-                )}
 
                 {/* About Me Section integrated directly into Home overview */}
                 <div className="pt-8 border-t border-[#381B19]/60">
@@ -189,7 +197,7 @@ export default function App() {
               </motion.div>
             )}
 
-            {/* ----------------- PAGE 2: WORK / WEB DEVELOPMENT DIRECTORY ----------------- */}
+            {/* ----------------- PAGE 2: MY WORKS HUB (2 CHOICES: GRAPHIC DESIGN & WEB DEV) ----------------- */}
             {activePage === 'work' && (
               <motion.div
                 key="work"
@@ -198,14 +206,31 @@ export default function App() {
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
               >
-                <WorkView
-                  onSelectCaseStudy={handleSelectCaseStudy}
+                <MyWorksView
+                  onSelectWebDev={() => handlePageChange('web-dev')}
+                  onSelectGraphicDesign={() => handlePageChange('graphic-design')}
                   onNavigateHome={() => handlePageChange('home')}
                 />
               </motion.div>
             )}
 
-            {/* ----------------- PAGE: GRAPHIC DESIGN ----------------- */}
+            {/* ----------------- PAGE: WEB DEVELOPMENT WORKS & APPLICATIONS ----------------- */}
+            {activePage === 'web-dev' && (
+              <motion.div
+                key="web-dev"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+              >
+                <WorkView
+                  onSelectCaseStudy={handleSelectCaseStudy}
+                  onNavigateHome={() => handlePageChange('work')}
+                />
+              </motion.div>
+            )}
+
+            {/* ----------------- PAGE: GRAPHIC DESIGN & CREATIVE GALLERIES ----------------- */}
             {activePage === 'graphic-design' && (
               <motion.div
                 key="graphic-design"
@@ -215,7 +240,7 @@ export default function App() {
                 transition={{ duration: 0.3 }}
               >
                 <GraphicDesignView
-                  onNavigateHome={() => handlePageChange('home')}
+                  onNavigateHome={() => handlePageChange('work')}
                   onSelectProject={(id) => handlePageChange(id)}
                 />
               </motion.div>
@@ -289,31 +314,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-12 py-8"
               >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center md:text-left">
-                  <button
-                    onClick={() => handlePageChange('home')}
-                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-                    <span>Back to Home Overview</span>
-                  </button>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#381B19] text-[#D68379] text-xs font-display font-bold border border-[#572A26]">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>PAGE // CAPABILITIES &amp; TECHNICAL STANDARDS</span>
-                    </span>
-                  </div>
-                  <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0]">
-                    Core Competencies &amp; Services
-                  </h1>
-                  <p className="text-rose-200/80 font-sans text-lg max-w-3xl font-light">
-                    Commercial capabilities split into two core pillars: High-fidelity Graphic &amp; UI/UX Design and Production-grade Frontend Engineering.
-                  </p>
-                </div>
-
-                {/* Main Services Component */}
                 <Services />
               </motion.div>
             )}
@@ -326,19 +327,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-12 py-8"
               >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center md:text-left">
-                  <button
-                    onClick={() => handlePageChange('home')}
-                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-                    <span>Back to Home Overview</span>
-                  </button>
-                </div>
-
-                {/* Main About Component */}
                 <About />
               </motion.div>
             )}
@@ -351,19 +340,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-12 py-8"
               >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center md:text-left">
-                  <button
-                    onClick={() => handlePageChange('home')}
-                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-                    <span>Back to Home Overview</span>
-                  </button>
-                </div>
-
-                {/* Main Skills Component */}
                 <SkillsStats />
               </motion.div>
             )}
@@ -376,31 +353,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-12 py-8"
               >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center md:text-left">
-                  <button
-                    onClick={() => handlePageChange('home')}
-                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#251110] border border-[#572A26] hover:border-[#D68379] text-rose-200 hover:text-[#fff8f0] font-display font-bold text-xs uppercase tracking-wider transition-all shadow-md mb-2"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5 text-[#D68379] group-hover:-translate-x-1 transition-transform" />
-                    <span>Back to Home Overview</span>
-                  </button>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#381B19] text-[#D68379] text-xs font-display font-bold border border-[#572A26]">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>PAGE // PRODUCT DELIVERY &amp; QA METHODOLOGY</span>
-                    </span>
-                  </div>
-                  <h1 className="text-4xl sm:text-6xl font-serif font-bold text-[#fff8f0]">
-                    Engineering &amp; Design Process
-                  </h1>
-                  <p className="text-rose-200/80 font-sans text-lg max-w-3xl font-light">
-                    A structured 4-phase framework ensuring seamless team handoff, robust design token synchronization, and high core web vitals performance.
-                  </p>
-                </div>
-
-                {/* Main Process Component */}
                 <Process />
               </motion.div>
             )}

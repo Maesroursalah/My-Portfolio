@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { onImageError } from '../lib/imgFallback';
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -50,6 +51,8 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 src={PERSONAL_INFO.logo}
                 alt="Mesrour Salah Eddine Logo"
                 referrerPolicy="no-referrer"
+                onError={onImageError}
+                decoding="async"
                 className="w-full h-full object-cover rounded-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-[#D68379]/20 via-transparent to-transparent pointer-events-none" />
