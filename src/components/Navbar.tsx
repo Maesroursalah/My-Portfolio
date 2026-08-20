@@ -18,7 +18,6 @@ import {
   ChevronDown,
   Mail,
   MessageCircle,
-  Heart,
   ExternalLink,
   MapPin,
   Briefcase,
@@ -51,7 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   const setMenuOpen = setControlledMenuOpen !== undefined ? setControlledMenuOpen : setInternalMenuOpen;
 
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -340,31 +338,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="absolute inset-0 bg-gradient-to-t from-[#120706] via-[#120706]/40 to-black/60 pointer-events-none" />
 
               {/* Floating Top Controls */}
-              <div className="absolute top-4 left-4 right-4 sm:left-8 sm:right-8 flex items-center justify-between z-10 max-w-4xl mx-auto">
-                <div className="px-3 py-1.5 rounded-full bg-[#1B0C0B]/80 backdrop-blur-md border border-[#572A26] text-rose-100 flex items-center gap-2 shadow-lg">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="text-xs font-mono font-bold tracking-wider">
-                    {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setLiked(!liked)}
-                    className="w-10 h-10 rounded-full bg-[#1B0C0B]/80 hover:bg-[#251110] backdrop-blur-md border border-[#572A26] hover:border-[#D68379] flex items-center justify-center text-rose-100 transition-all active:scale-95 shadow-lg"
-                    aria-label="Like"
-                  >
-                    <Heart className={`w-5 h-5 ${liked ? 'fill-rose-500 text-rose-500' : 'text-rose-200'}`} />
-                  </button>
-                  <button
-                    onClick={() => setMenuOpen(false)}
-                    className="h-10 px-4 rounded-full bg-[#251110]/90 hover:bg-[#381B19] backdrop-blur-md border border-[#572A26] hover:border-[#D68379] flex items-center gap-2 text-rose-100 transition-all active:scale-95 shadow-lg font-display text-xs font-bold uppercase tracking-wider"
-                    aria-label="Close menu"
-                  >
-                    <span>Close</span>
-                    <X className="w-4 h-4 text-[#D68379]" />
-                  </button>
-                </div>
+              <div className="absolute top-4 right-4 sm:right-8 flex items-center justify-end z-10 max-w-4xl mx-auto">
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="h-10 px-4 rounded-full bg-[#251110]/90 hover:bg-[#381B19] backdrop-blur-md border border-[#572A26] hover:border-[#D68379] flex items-center gap-2 text-rose-100 transition-all active:scale-95 shadow-lg font-display text-xs font-bold uppercase tracking-wider"
+                  aria-label="Close menu"
+                >
+                  <span>Close</span>
+                  <X className="w-4 h-4 text-[#D68379]" />
+                </button>
               </div>
             </div>
 
