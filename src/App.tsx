@@ -33,6 +33,7 @@ export default function App() {
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionTarget, setTransitionTarget] = useState('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Router active page state synced with hash
   const [activePage, setActivePage] = useState<string>(() => {
@@ -172,7 +173,12 @@ export default function App() {
         <CanvasBackground />
 
         {/* Fixed Navigation Bar synced with active page */}
-        <Navbar activePage={activePage} setActivePage={handlePageChange} />
+        <Navbar
+          activePage={activePage}
+          setActivePage={handlePageChange}
+          menuOpen={isMenuOpen}
+          setMenuOpen={setIsMenuOpen}
+        />
 
         {/* Multi-Page Views Container */}
         <main className="relative z-10 pt-20">
@@ -188,12 +194,6 @@ export default function App() {
                 className="space-y-16"
               >
                 <Hero onNavigate={(page) => handlePageChange(page)} />
-                <Marquee />
-
-                {/* About Me Section integrated directly into Home overview */}
-                <div className="pt-8 border-t border-[#381B19]/60">
-                  <About />
-                </div>
               </motion.div>
             )}
 
@@ -377,12 +377,14 @@ export default function App() {
         </main>
 
         {/* Footer with Page Navigation Directory */}
-        <div className="pb-16 lg:pb-0">
+        <div className={isMenuOpen ? '' : 'pb-16 lg:pb-0'}>
           <Footer onNavigate={handlePageChange} />
         </div>
 
         {/* Mobile App Dock Navigation Bar */}
-        <MobileBottomNav activePage={activePage} setActivePage={handlePageChange} />
+        {!isMenuOpen && (
+          <MobileBottomNav activePage={activePage} setActivePage={handlePageChange} />
+        )}
       </div>
       </LanguageProvider>
     </ThemeProvider>

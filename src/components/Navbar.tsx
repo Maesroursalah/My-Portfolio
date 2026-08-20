@@ -32,13 +32,24 @@ import { onImageError } from '../lib/imgFallback';
 interface NavbarProps {
   activePage: string;
   setActivePage: (page: string) => void;
+  menuOpen?: boolean;
+  setMenuOpen?: (open: boolean) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  activePage,
+  setActivePage,
+  menuOpen: controlledMenuOpen,
+  setMenuOpen: setControlledMenuOpen
+}) => {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t, isRTL } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [internalMenuOpen, setInternalMenuOpen] = useState(false);
+
+  const menuOpen = controlledMenuOpen !== undefined ? controlledMenuOpen : internalMenuOpen;
+  const setMenuOpen = setControlledMenuOpen !== undefined ? setControlledMenuOpen : setInternalMenuOpen;
+
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -368,10 +379,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => 
                   "Work hard in silence. Let your success be the noise."
                 </p>
                 <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-800/60 text-[11px] font-mono font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{t('available_role')}</span>
-                  </div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#251110] text-rose-200/80 border border-[#572A26] text-[11px] font-mono">
                     <MapPin className="w-3 h-3 text-[#D68379]" />
                     <span>{PERSONAL_INFO.location}</span>

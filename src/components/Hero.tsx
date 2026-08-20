@@ -1,6 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { FolderGit2, ArrowRight, Palette, Code } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { useLanguage } from './LanguageContext';
 import { onImageError } from '../lib/imgFallback';
@@ -11,6 +10,18 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
+  const heroRef = useRef<HTMLDivElement | null>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+
+  // Smooth scroll animations for the hero image card
+  const y = useTransform(scrollYProgress, [0, 1], [0, 110]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.14]);
 
   const handleNav = (pageId: string) => {
     if (onNavigate) {
@@ -22,67 +33,30 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   };
 
   return (
-    <section id="hero" className="relative min-h-[85vh] flex flex-col justify-between pt-20 pb-12 overflow-hidden">
+    <section ref={heroRef} id="hero" className="relative min-h-[85vh] flex flex-col justify-between pt-20 pb-12 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto space-y-8 sm:space-y-12 z-10">
-        {/* Main Profile Showcase Card */}
-        <div className="flex flex-col items-center justify-center text-center gap-8 py-4">
+        {/* Main Profile Showcase Card with Scroll Interaction */}
+        <div className="flex flex-col items-center justify-center text-center py-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative group w-full max-w-sm sm:max-w-md aspect-[4/5] rounded-3xl overflow-hidden border-2 border-[#572A26] bg-[#251110] shadow-2xl shadow-black/80 hover:border-[#D68379] transition-all duration-500"
+            style={{ y, scale, opacity }}
+            className="relative group w-full max-w-sm sm:max-w-md aspect-[4/5] rounded-3xl overflow-hidden border-2 border-[#572A26] bg-[#251110] shadow-2xl shadow-black/80 hover:border-[#D68379] transition-colors duration-500 will-change-transform"
           >
-            {/* Profile Image of Me */}
-            <img
+            {/* Profile Image of Me with smooth dynamic zoom effect */}
+            <motion.img
+              style={{ scale: imgScale }}
               src={PERSONAL_INFO.avatar}
               alt="Mesrour Salah Eddine"
               referrerPolicy="no-referrer"
               onError={onImageError}
               decoding="async"
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 will-change-transform"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A] via-transparent to-transparent opacity-90" />
-            
-            {/* Top Status Badge */}
-            <div className="absolute top-4 right-4 flex items-center justify-end">
-              <span className="px-3 py-1.5 rounded-full bg-[#381B19]/90 backdrop-blur-md border border-[#572A26] text-xs font-mono text-[#D68379] font-bold shadow-lg">
-                {t('hero_city')}
-              </span>
-            </div>
-
-            {/* Bottom Info Bar */}
-            <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#150B0A]/95 backdrop-blur-md border border-[#572A26] space-y-1.5 text-left rtl:text-right shadow-2xl">
-              <div className="text-base sm:text-lg font-display font-bold text-[#fff8f0]">
-                {t('hero_name')}
-              </div>
-              <div className="text-xs text-[#D68379] font-mono font-medium">
-                {t('hero_subtitle')}
-              </div>
-              <div className="text-xs text-rose-200/90 font-sans flex items-center justify-between pt-1.5 border-t border-[#381B19]">
-                <span className="flex items-center gap-1 text-[#EBB5AF]"><Palette className="w-3.5 h-3.5 text-[#D68379]" /> {t('hero_tag_brand')}</span>
-                <span className="flex items-center gap-1 text-[#EBB5AF]"><Code className="w-3.5 h-3.5 text-[#D68379]" /> {t('hero_tag_web')}</span>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A] via-transparent to-transparent opacity-40 pointer-events-none" />
           </motion.div>
         </div>
-
-        {/* Action Buttons & Navigation CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-2 w-full max-w-xs sm:max-w-none mx-auto"
-        >
-          <button
-            onClick={() => handleNav('work')}
-            className="group w-full sm:w-auto px-8 sm:px-10 py-4 rounded-full bg-gradient-to-r from-[#B85C52] via-[#C8746B] to-[#D68379] text-[#fff8f0] font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-rose-950/60 hover:shadow-[#D68379]/30 cursor-pointer"
-            data-cursor="MY WORKS"
-          >
-            <FolderGit2 className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{t('hero_view_works')}</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
-          </button>
-        </motion.div>
       </div>
     </section>
   );
