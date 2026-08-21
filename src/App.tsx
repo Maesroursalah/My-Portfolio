@@ -16,6 +16,8 @@ import { OzonexpressGalleryView } from './components/OzonexpressGalleryView';
 import { BeliveGalleryView } from './components/BeliveGalleryView';
 import { BlackHoleGalleryView } from './components/BlackHoleGalleryView';
 import { MomentoAdsGalleryView } from './components/MomentoAdsGalleryView';
+import { ZaphyreAdsGalleryView } from './components/ZaphyreAdsGalleryView';
+import { NixxMenuGalleryView } from './components/NixxMenuGalleryView';
 import { Services } from './components/Services';
 import { About } from './components/About';
 import { SkillsStats } from './components/SkillsStats';
@@ -39,7 +41,7 @@ export default function App() {
   const [activePage, setActivePage] = useState<string>(() => {
     const hash = window.location.hash.replace('#/', '').replace('#', '');
     if (hash === 'my-works') return 'work';
-    return ['home', 'work', 'my-works', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'about', 'skills', 'process', 'case-study'].includes(hash)
+    return ['home', 'work', 'my-works', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'zaphyre-ads', 'nixx-menu', 'services', 'about', 'skills', 'process', 'case-study'].includes(hash)
       ? hash
       : 'home';
   });
@@ -58,7 +60,7 @@ export default function App() {
         return;
       } else if (hash === 'my-works') {
         target = 'work';
-      } else if (['home', 'work', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'services', 'skills', 'process', 'case-study'].includes(hash)) {
+      } else if (['home', 'work', 'web-dev', 'graphic-design', 'ozonexpress', 'belive', 'black-hole', 'momento-ads', 'zaphyre-ads', 'nixx-menu', 'services', 'skills', 'process', 'case-study'].includes(hash)) {
         target = hash;
       }
 
@@ -301,6 +303,36 @@ export default function App() {
                 transition={{ duration: 0.3 }}
               >
                 <MomentoAdsGalleryView
+                  onBack={() => handlePageChange('graphic-design')}
+                />
+              </motion.div>
+            )}
+
+            {/* ----------------- PAGE: ZAPHYRE ADS GALLERY ----------------- */}
+            {activePage === 'zaphyre-ads' && (
+              <motion.div
+                key="zaphyre-ads"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ZaphyreAdsGalleryView
+                  onBack={() => handlePageChange('graphic-design')}
+                />
+              </motion.div>
+            )}
+
+            {/* ----------------- PAGE: NIXX MENU GALLERY ----------------- */}
+            {activePage === 'nixx-menu' && (
+              <motion.div
+                key="nixx-menu"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+              >
+                <NixxMenuGalleryView
                   onBack={() => handlePageChange('graphic-design')}
                 />
               </motion.div>

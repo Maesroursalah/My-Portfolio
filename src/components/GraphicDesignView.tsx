@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Layers, Video, Palette, Printer, LayoutGrid, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Layers, Video, Palette, Printer, LayoutGrid, ChevronDown, UtensilsCrossed } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from './LanguageContext';
 import { onImageError } from '../lib/imgFallback';
@@ -17,10 +17,10 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const categories: { id: CategoryType; label: string; count: number; icon: React.FC<{ className?: string }> }[] = [
-    { id: 'all', label: t('cat_all'), count: 4, icon: LayoutGrid },
-    { id: 'social-media-ads', label: t('cat_social_media'), count: 2, icon: Video },
+    { id: 'all', label: t('cat_all'), count: 6, icon: LayoutGrid },
+    { id: 'social-media-ads', label: t('cat_social_media'), count: 3, icon: Video },
     { id: 'logo', label: t('cat_logo'), count: 1, icon: Palette },
-    { id: 'print-works', label: t('cat_print'), count: 1, icon: Printer },
+    { id: 'print-works', label: t('cat_print'), count: 2, icon: Printer },
   ];
 
   const currentCategoryObj = categories.find((c) => c.id === selectedCategory) || categories[0];
@@ -190,7 +190,7 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   {t('cat_all')}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#fff8f0]">
-                  {t('cat_all')} (4 Projects)
+                  {t('cat_all')} (6 Projects)
                 </h2>
               </div>
 
@@ -304,6 +304,55 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                   </div>
                 </motion.div>
 
+                {/* 3. ZAPHYRE ADS Project (Empty) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.12 }}
+                  onClick={() => onSelectProject?.('zaphyre-ads')}
+                  className="group cursor-pointer rounded-3xl bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] p-5 space-y-4 transition-all duration-300 shadow-xl"
+                  data-cursor="VIEW"
+                >
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-b from-[#251110] to-[#160A09] border border-[#381B19] flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[#381B19]/80 border border-[#572A26] flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                      <Video className="w-8 h-8 text-[#D68379]" />
+                    </div>
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
+                    
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-rose-300/80 border border-[#381B19] backdrop-blur-md">
+                        0 Creatives
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 right-3">
+                      <div className="p-3 rounded-full bg-[#D68379] text-[#fff8f0] group-hover:bg-[#ffffff] group-hover:text-[#D68379] transition-colors shadow-lg">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-mono uppercase text-[#D68379] bg-[#381B19] px-2 py-0.5 rounded-md border border-[#572A26]">
+                          {t('cat_social_media')}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_zaphyre_ads_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_zaphyre_ads_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
+                    </span>
+                  </div>
+                </motion.div>
+
                 {/* 3. Belive Logo Project */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -404,6 +453,60 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                       </h3>
                       <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
                         {t('project_blackhole_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* 5. NIXX MENU Print Works & Dining Project */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.28 }}
+                  onClick={() => onSelectProject?.('nixx-menu')}
+                  className="group cursor-pointer rounded-3xl bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] p-5 space-y-4 transition-all duration-300 shadow-xl"
+                  data-cursor="VIEW"
+                >
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-b from-[#251110] to-[#160A09] border border-[#381B19]">
+                    <img
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/nixx%20menu_page-0001.jpg"
+                      alt="NIXX Menu Editorial Print Design"
+                      referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-[#150B0A]/30 to-transparent" />
+                    
+                    <div className="absolute top-3 left-3">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-[#D68379] border border-[#381B19] backdrop-blur-md">
+                        Print & Digital
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 right-3">
+                      <div className="p-3 rounded-full bg-[#D68379] text-[#fff8f0] group-hover:bg-[#ffffff] group-hover:text-[#D68379] transition-colors shadow-lg">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-mono uppercase text-[#D68379] bg-[#381B19] px-2 py-0.5 rounded-md border border-[#572A26]">
+                          {t('cat_print')}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_nixx_menu_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_nixx_menu_desc')}
                       </p>
                     </div>
                     <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
@@ -533,6 +636,53 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                       </h3>
                       <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
                         {t('project_momento_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* ZAPHYRE ADS Project (Empty) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.15 }}
+                  onClick={() => onSelectProject?.('zaphyre-ads')}
+                  className="group cursor-pointer rounded-3xl bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] p-5 space-y-4 transition-all duration-300 shadow-xl"
+                  data-cursor="VIEW"
+                >
+                  {/* Visual Thumbnail Frame */}
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-b from-[#251110] to-[#160A09] border border-[#381B19] flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[#381B19]/80 border border-[#572A26] flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                      <Video className="w-8 h-8 text-[#D68379]" />
+                    </div>
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-transparent to-transparent pointer-events-none" />
+                    
+                    <div className="absolute top-3 left-3">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-rose-300/80 border border-[#381B19] backdrop-blur-md">
+                        0 Creatives
+                      </span>
+                    </div>
+
+                    {/* Bottom Action overlay */}
+                    <div className="absolute bottom-3 right-3">
+                      <div className="p-3 rounded-full bg-[#D68379] text-[#fff8f0] group-hover:bg-[#ffffff] group-hover:text-[#D68379] transition-colors shadow-lg">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Details Section */}
+                  <div className="pt-1 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_zaphyre_ads_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_zaphyre_ads_desc')}
                       </p>
                     </div>
                     <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
@@ -685,6 +835,55 @@ export const GraphicDesignView: React.FC<GraphicDesignViewProps> = ({ onNavigate
                       </h3>
                       <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
                         {t('project_blackhole_desc')}
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
+                      &rarr;
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* NIXX MENU Project */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.15 }}
+                  onClick={() => onSelectProject?.('nixx-menu')}
+                  className="group cursor-pointer rounded-3xl bg-[#1B0C0B] border border-[#572A26] hover:border-[#D68379] p-5 space-y-4 transition-all duration-300 shadow-xl"
+                  data-cursor="VIEW"
+                >
+                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-b from-[#251110] to-[#160A09] border border-[#381B19]">
+                    <img
+                      src="https://cdn.jsdelivr.net/gh/Maesroursalah/portfolio@main/nixx%20menu_page-0001.jpg"
+                      alt="NIXX Menu Editorial Print Design"
+                      referrerPolicy="no-referrer"
+                      onError={onImageError}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#150B0A]/90 via-[#150B0A]/30 to-transparent" />
+                    
+                    <div className="absolute top-3 left-3">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#1B0C0B]/90 text-[#D68379] border border-[#381B19] backdrop-blur-md">
+                        Print & Digital
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-3 right-3">
+                      <div className="p-3 rounded-full bg-[#D68379] text-[#fff8f0] group-hover:bg-[#ffffff] group-hover:text-[#D68379] transition-colors shadow-lg">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-serif font-bold text-[#fff8f0] group-hover:text-[#D68379] transition-colors">
+                        {t('project_nixx_menu_title')}
+                      </h3>
+                      <p className="text-xs text-rose-300/60 line-clamp-1 mt-0.5 font-sans">
+                        {t('project_nixx_menu_desc')}
                       </p>
                     </div>
                     <span className="text-xs font-mono text-rose-300/60 uppercase shrink-0">
